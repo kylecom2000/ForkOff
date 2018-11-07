@@ -25,3 +25,5 @@
 * Pairing each user using FireBase
 * Comparing results
 * Displaying table at end of session.
+
+## Rough Sketch of project [HERE](assets/images/RoughDraft.JPG)
