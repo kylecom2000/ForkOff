@@ -24,7 +24,7 @@ var config = {
 var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
 
-var ZomatoQuery = "https://developers.zomato.com/api/v2.1/search?";
+var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zomato.com/api/v2.1/search?";
 // var ZomatoQuery = "https://developers.zomato.com/api/v2.1/search?q=franklins"
 
 $.ajax({
