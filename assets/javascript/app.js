@@ -12,7 +12,8 @@
 // Local variables go below this line
 // ===================================================================================
 
-var LocalState = ""
+var LocalState = "waiting"
+var LocalID = "";
 
 var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
@@ -75,15 +76,24 @@ function ChooseState (UserSnap) {
 
   if (CurrentUsers === 1) {
 
+    if (LocalID === "") {LocalID = "PlayerOne";}
+
     database.ref(RoomID+"/RunState").set({"state" : "waiting"});
 
   } else if (CurrentUsers >= 2 && LocalState === "waiting") {
 
-    database.ref(RoomID+"/RunState").set({"state" : "waiting"});
+    if (LocalID === "") {LocalID = "PlayerTwo";}
+
+    PrepareDecisions();
+
+    database.ref(RoomID+"/RunState").set({"state" : "choosing"});
 
   }
 
 };
+
+// This function sets up the screen (creates the divs and buttons) for the choosing phase.
+function PrepareDecisions () {};
 
 function ipLookUp () {
   $.ajax('http://ip-api.com/json')
@@ -98,7 +108,96 @@ function ipLookUp () {
           console.log('Request failed.  Returned status of', status);
       }
   );
-}
+};
+
+// Depending on the stored state
+function DecideCourse (StateSnap) {
+
+  LocalState = StateSnap.val().state;
+
+  // If you're waiting, don't do anything
+  if (LocalState === "waiting") {}
+
+  // If you're choosing, present a new option
+  else if (LocalState === "choosing") {
+
+    NewOption();
+
+  }
+
+  // If one person has chosen, you're still waiting.
+  else if (LocalState === "choosewait") {
+
+    // possibly a function that says you're waiting for the other person
+
+  }
+
+  // If both people have chosen, check their agreement
+  else if (LocalState === "chosen") {
+
+    Evaluate();
+
+  }
+
+  // If you've agreed, display results
+  else if (LocalState === "decided") {
+
+    DisplayResult();
+
+  };
+
+};
+
+// This puts a new option on the screen, corresponding to some kind of index.
+function NewOption () {
+
+  LocalChoice = true;
+  database.ref(RoomID+"/Choices/").set({});
+
+  // TODO Give directions and define a timer span.
+
+  var TimeRemaining = 30;
+
+  CurrentTimer = setInterval(function () {
+
+      TimeRemaining--;
+      TimerSpan.textContent = TimeRemaining;
+
+      // if time expires, pick a random choice.
+      if (TimeRemaining <= 0) {
+
+          clearInterval(CurrentTimer);
+          
+          TransmitChoice(LocalChoice);
+
+        }
+
+  }, 1000);
+
+
+};
+
+// Sends the choice the player has made to the database.
+function TransmitChoice (Choice) {
+
+  // Need a conditional because apparently the first part of a set statement can't be a variable.
+  if(LocalID === "PlayerOne") {
+
+      database.ref("RPS/Choices/").update({PlayerOne : Choice});
+  
+  } else {
+
+      database.ref("RPS/Choices/").update({PlayerTwo : Choice});
+
+  }
+  
+};
+
+// This evaluates the two choices
+function Evaluate () {};
+
+// This function displays the choice you've both agreed on.
+function DisplayResult () {};
 
 // Local execution code goes below this line
 //=======================================================================================
