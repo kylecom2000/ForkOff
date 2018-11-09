@@ -1,22 +1,46 @@
-.jumbotron {
-    background-color: #adebeb;
-    text-align: center;
+body {
+    background-image: url("../images/kenny-luo-649778-unsplash.jpg");
+    background-size: 100%;
 }
 
-h1 {
-    font-size: 80px;
-    letter-spacing: 5px;
-    color: white;
-    text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
+
+.jumbotron {
+    background-color: rgba(173, 235, 235, 0.5);
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 35px;
+
 }
+
 
 img {
     overflow: hidden;
     mix-blend-mode: multiply;
     animation-duration: 2s;
     animation-iteration-count: 1;
-    animation-name: flip;      
+    animation-name: flip;  
+    background-color: rgba(173, 235, 235, 0);
+    height: 275px;
+    width: 300px;
+   
 }
+
+#left-fork {
+    transform: rotate("20deg");
+}
+
+
+h1 {
+    
+    font-size: 100px;
+    letter-spacing: 7px;
+    padding: 45px;
+    color: rgb(255,194,102);
+    text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
+}
+
+
+
 
 @keyframes flip {
     from {
