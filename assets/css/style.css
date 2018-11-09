@@ -1,3 +1,7 @@
+html, body {
+    width: 100%;
+}
+
 body {
     background-image: url("../images/kenny-luo-649778-unsplash.jpg");
     background-size: 100%;
@@ -9,6 +13,7 @@ body {
     text-align: center;
     margin-bottom: 15px;
     padding-bottom: 35px;
+    width: 100%;
 
 }
 
@@ -20,13 +25,9 @@ img {
     animation-iteration-count: 1;
     animation-name: flip;  
     background-color: rgba(173, 235, 235, 0);
-    height: 275px;
-    width: 300px;
+    height: 200px;
+    width: 200px;
    
-}
-
-#left-fork {
-    transform: rotate("20deg");
 }
 
 
@@ -84,5 +85,58 @@ h1 {
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
       }
+    }
+
+    .container {
+        background-color: rgba(126, 147, 153, 0.5);
+        color: whitesmoke;
+    }
+
+    .form-group {
+        text-align: center;
+    }
+
+
+    @media screen and (max-width: 768px) {
+        img {
+            display: flex;
+        }
+        .jumbotron {
+            padding-top: 60px; 
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 60px;
+        }
+
+        body {
+            background: cover;
+            background-position: center;
+        }
+    }
+    @media screen and (max-width: 375px) {
+        img{
+            display: none;
+        }
+        .jumbotron {
+            padding-top: 60px;
+        }
+
+        h1 {
+            font-size: 50px;
+            padding-left: 18px;
+        }
+        body {
+            background-size: cover;
+            background-position: center;
+        }
+        p {
+            color: white;
+            background-color: rgb(126, 147, 153);
+            opacity: 0.7;
+            width: 95%;
+            margin-top: 40px;
+        }  
     }
     
