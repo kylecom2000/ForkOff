@@ -12,6 +12,8 @@
 // Local variables go below this line
 // ===================================================================================
 
+var LocalState = ""
+
 var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
 
@@ -44,10 +46,44 @@ var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zom
 
 // })
 
+
 // Local functions go below this line.
 // ======================================================================================
 
-function StartButton () {};
+// When the user hits the start button
+function StartButton () {
+
+  // Take their input and save it as a new Room ID
+  var RoomID = $("#room-info").val();
+
+  // Add the current user to the list of attendees is the local room, and remove them if they disconnect.
+  var Attend = database.ref(RoomID+"/Attendees").push(true);
+  Attend.onDisconnect().remove();
+
+  // Add a listener that listens to the number of users in the room.
+  database.ref(RoomID+"/Attendees").on("value", ChooseState(snap));
+
+  database.ref(RoomID+"/RunState").on("value", DecideCourse(snap));
+
+};
+
+// When the number of users changes...
+function ChooseState (UserSnap) {
+
+  // Save a variable that is the number of users.
+  var CurrentUsers = UserSnap.numChildren();
+
+  if (CurrentUsers === 1) {
+
+    database.ref(RoomID+"/RunState").set({"state" : "waiting"});
+
+  } else if (CurrentUsers >= 2 && LocalState === "waiting") {
+
+    database.ref(RoomID+"/RunState").set({"state" : "waiting"});
+
+  }
+
+};
 
 function ipLookUp () {
   $.ajax('http://ip-api.com/json')
@@ -67,7 +103,19 @@ function ipLookUp () {
 // Local execution code goes below this line
 //=======================================================================================
 
-$(document).ready(function() {});
+$(document).ready(function() {
+
+  $("#start-btn").on("click", function() {
+
+    StartButton();
+
+  })
+  
+
+
+
+
+});
 
 // Firebase code and listeners go below this line
 //=======================================================================================
@@ -85,10 +133,13 @@ var config = {
 
   firebase.initializeApp(config);
 
+  var database = firebase.database();
+
   // Variables for the connection, part provided by Firebase, part stored in the DB.
-// var connectionsRef = database.ref("RPS/connections");
-// var connectedRef = database.ref(".info/connected");
-// var PersonalID = "";
+var connectionsRef = database.ref("connections");
+var connectedRef = database.ref(".info/connected");
+var PersonalID = "";
+
 var PersonalIDObj = "";
 
 
@@ -100,59 +151,13 @@ connectedRef.on("value", function(snap) {
 
         // Add user to the connections list.
         PersonalIDObj = connectionsRef.push(true);
-        PersonalID = PersonalIDObj.path.n[2];
+        PersonalID = PersonalIDObj.path.pieces_[1];
 
         // Remove user from the connection list when they disconnect.
-        con.onDisconnect().remove();
+        PersonalIDObj.onDisconnect().remove();
 
     }
     
-});
-
-// When the local connection monitor changes, decide whether to call the present player one, two, or nobody.
-connectionsRef.on("value", function(snap) {
-
-    var CurrentPlayers = snap.numChildren();
-
-    if (CurrentPlayers === 1) {
-
-        database.ref("RPS/Choices").remove();
-
-        database.ref("RPS/gamestate").set({"state" : "wait"})
-
-        if (LocalID !== "") {
-
-            LocalID = "PlayerOne";
-
-            clearInterval(CurrentTimer);
-
-            SetPlayerOne();
-
-        }
-
-    }
-
-    // Assign a local ID depending on the number of players
-    if (LocalID === "") {
-        // If there's ony one connection, make the current connection player 1
-        if (CurrentPlayers === 1) {
-            LocalID = "PlayerOne";
-            SetPlayerOne();
-
-        // If there are two connections, make the current connection player 2
-        } else if (CurrentPlayers === 2) {
-
-            LocalID = "PlayerTwo";
-            SetPlayerTwo();
-
-        // Otherwise, set the player to a non-participant.
-        } else {
-            LocalID = "NonParticipant";
-            SetNonPlayer();
-        }
-
-    }
-
 });
 
 
