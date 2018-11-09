@@ -1,3 +1,46 @@
+// Local variables go below this line
+// ===================================================================================
+
+var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
+var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
+
+var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zomato.com/api/v2.1/search?";
+// var ZomatoQuery = "https://developers.zomato.com/api/v2.1/search?q=franklins"
+
+// $.ajax({
+//   url: ZomatoQuery,
+//   headers: {'user_key' : ZomatoAPIkey},
+//   params: {q: 'franklins'}, 
+//   method: "GET"}).then(function(response) {
+
+//     console.log("I'm trying!");
+//     console.log(response);
+
+// })
+
+
+var GoogleQuery = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + GoogleAPIkey;
+
+$.ajax({
+  url: GoogleQuery,
+  method : "POST"
+}).then(function(response) {
+
+  console.log(response);
+
+
+})
+
+// Local functions go below this line.
+// ======================================================================================
+
+// Local execution code goes below this line
+//=======================================================================================
+
+// Firebase code and listeners go below this line
+//=======================================================================================
+
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyCcVhov3nef0x8rAfCS2B4sps4RgA5-l3I",
@@ -21,19 +64,3 @@ var config = {
 // Class of thumb buttons: thumbs
 //
 
-var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
-var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
-
-var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zomato.com/api/v2.1/search?";
-// var ZomatoQuery = "https://developers.zomato.com/api/v2.1/search?q=franklins"
-
-$.ajax({
-  url: ZomatoQuery,
-  headers: {'user_key' : ZomatoAPIkey},
-  params: {q: 'franklins'}, 
-  method: "GET"}).then(function(response) {
-
-    console.log("I'm trying!");
-    console.log(response);
-
-})
