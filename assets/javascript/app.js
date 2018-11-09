@@ -19,38 +19,42 @@ var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
 
 var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zomato.com/api/v2.1/search?";
-// var ZomatoQuery = "https://developers.zomato.com/api/v2.1/search?q=franklins"
-
-// $.ajax({
-//   url: ZomatoQuery,
-//   headers: {'user_key' : ZomatoAPIkey},
-//   params: {q: 'franklins'}, 
-//   method: "GET"}).then(function(response) {
-
-//     console.log("I'm trying!");
-//     console.log(response);
-
-// })
-
-
-
-
-// var GoogleQuery = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + GoogleAPIkey;
-
-// $.ajax({
-//   url: GoogleQuery,
-//   method : "POST"
-// }).then(function(response) {
-
-//   console.log(response);
-
-
-// })
 
 
 // Local functions go below this line.
 // ======================================================================================
 
+function ipLookUp () {
+  $.ajax('http://ip-api.com/json')
+  .then(
+      function success(response) {
+          console.log('response: ', response);
+          console.log('User\'s lat is: ', response.lat);
+          console.log('User\'s long is: ', response.lon);
+          var userLat = response.lat;
+          var userLon = response.lon;
+          zomatoLookup(userLat,userLon);
+      },
+
+      function fail(data, status) {
+          console.log('Request failed.  Returned status of', status);
+      }  
+  );
+}
+
+function zomatoLookup(lat,lon) {
+  console.log(lat, lon);
+  rapid.call('Zomato', 'getLocationDetailsByCoordinates', { 
+    'coordinates': `${lat}, ${lon}`,
+    'apiKey': 'c30eca16c0c03ef51799b26e942490e3'
+  
+  }).on('success', function (payload) {
+     /*YOUR CODE GOES HERE*/ 
+     console.log(payload);
+  }).on('error', function (payload) {
+     /*YOUR CODE GOES HERE*/ 
+  });
+}
 // When the user hits the start button
 function StartButton () {
 
@@ -94,21 +98,6 @@ function ChooseState (UserSnap) {
 
 // This function sets up the screen (creates the divs and buttons) for the choosing phase.
 function PrepareDecisions () {};
-
-function ipLookUp () {
-  $.ajax('http://ip-api.com/json')
-  .then(
-      function success(response) {
-          console.log('response: ', response);
-          console.log('User\'s lat is: ', response.lat);
-          console.log('User\'s long is: ', response.lon);
-      },
-
-      function fail(data, status) {
-          console.log('Request failed.  Returned status of', status);
-      }
-  );
-};
 
 // Depending on the stored state
 function DecideCourse (StateSnap) {
@@ -258,7 +247,3 @@ connectedRef.on("value", function(snap) {
     }
     
 });
-
-
-
-
