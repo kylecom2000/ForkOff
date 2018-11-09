@@ -14,8 +14,6 @@
 
 var LocalState = ""
 
-function NotRun () {
-
 var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
 
@@ -46,7 +44,6 @@ $.ajax({
 
 })
 
-};
 
 // Local functions go below this line.
 // ======================================================================================
