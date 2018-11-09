@@ -30,22 +30,39 @@ var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zom
 // })
 
 
-var GoogleQuery = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + GoogleAPIkey;
-
-$.ajax({
-  url: GoogleQuery,
-  method : "POST"
-}).then(function(response) {
-
-  console.log(response);
 
 
-})
+// var GoogleQuery = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + GoogleAPIkey;
+
+// $.ajax({
+//   url: GoogleQuery,
+//   method : "POST"
+// }).then(function(response) {
+
+//   console.log(response);
+
+
+// })
 
 // Local functions go below this line.
 // ======================================================================================
 
 function StartButton () {};
+
+function ipLookUp () {
+  $.ajax('http://ip-api.com/json')
+  .then(
+      function success(response) {
+          console.log('response: ', response);
+          console.log('User\'s lat is: ', response.lat);
+          console.log('User\'s long is: ', response.lon);
+      },
+
+      function fail(data, status) {
+          console.log('Request failed.  Returned status of', status);
+      }
+  );
+}
 
 // Local execution code goes below this line
 //=======================================================================================
@@ -69,9 +86,9 @@ var config = {
   firebase.initializeApp(config);
 
   // Variables for the connection, part provided by Firebase, part stored in the DB.
-var connectionsRef = database.ref("RPS/connections");
-var connectedRef = database.ref(".info/connected");
-var PersonalID = "";
+// var connectionsRef = database.ref("RPS/connections");
+// var connectedRef = database.ref(".info/connected");
+// var PersonalID = "";
 var PersonalIDObj = "";
 
 
