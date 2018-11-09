@@ -1,3 +1,14 @@
+// ID for main container: main-content
+// ID for start button: start-btn
+// ID for thumbs up, thumbs down: thumbs-up, thumbs-down
+// ID for loading image: loading-img
+// ID for restaurant icon: food-img
+// ID for winning restaurant image: result-img
+// ID for forks that spin: fork-right, fork-left
+// ID for final page: results
+// ID for text on that page: results-directions
+// Class of thumb buttons: thumbs
+
 // Local variables go below this line
 // ===================================================================================
 
@@ -34,8 +45,12 @@ $.ajax({
 // Local functions go below this line.
 // ======================================================================================
 
+function StartButton () {};
+
 // Local execution code goes below this line
 //=======================================================================================
+
+$(document).ready(function() {});
 
 // Firebase code and listeners go below this line
 //=======================================================================================
@@ -50,17 +65,79 @@ var config = {
     storageBucket: "team1-project1.appspot.com",
     messagingSenderId: "221859996139"
   };
+
   firebase.initializeApp(config);
 
-// ID for main container: main-content
-// ID for start button: start-btn
-// ID for thumbs up, thumbs down: thumbs-up, thumbs-down
-// ID for loading image: loading-img
-// ID for restaurant icon: food-img
-// ID for winning restaurant image: result-img
-// ID for forks that spin: fork-right, fork-left
-// ID for final page: results
-// ID for text on that page: results-directions
-// Class of thumb buttons: thumbs
-//
+  // Variables for the connection, part provided by Firebase, part stored in the DB.
+var connectionsRef = database.ref("RPS/connections");
+var connectedRef = database.ref(".info/connected");
+var PersonalID = "";
+var PersonalIDObj = "";
+
+
+// When the client's connection state changes, push it to the local explicit connection monitor
+connectedRef.on("value", function(snap) {
+
+    // If they are connected..
+    if (snap.val()) {
+
+        // Add user to the connections list.
+        PersonalIDObj = connectionsRef.push(true);
+        PersonalID = PersonalIDObj.path.n[2];
+
+        // Remove user from the connection list when they disconnect.
+        con.onDisconnect().remove();
+
+    }
+    
+});
+
+// When the local connection monitor changes, decide whether to call the present player one, two, or nobody.
+connectionsRef.on("value", function(snap) {
+
+    var CurrentPlayers = snap.numChildren();
+
+    if (CurrentPlayers === 1) {
+
+        database.ref("RPS/Choices").remove();
+
+        database.ref("RPS/gamestate").set({"state" : "wait"})
+
+        if (LocalID !== "") {
+
+            LocalID = "PlayerOne";
+
+            clearInterval(CurrentTimer);
+
+            SetPlayerOne();
+
+        }
+
+    }
+
+    // Assign a local ID depending on the number of players
+    if (LocalID === "") {
+        // If there's ony one connection, make the current connection player 1
+        if (CurrentPlayers === 1) {
+            LocalID = "PlayerOne";
+            SetPlayerOne();
+
+        // If there are two connections, make the current connection player 2
+        } else if (CurrentPlayers === 2) {
+
+            LocalID = "PlayerTwo";
+            SetPlayerTwo();
+
+        // Otherwise, set the player to a non-participant.
+        } else {
+            LocalID = "NonParticipant";
+            SetNonPlayer();
+        }
+
+    }
+
+});
+
+
+
 
