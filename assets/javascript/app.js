@@ -65,31 +65,44 @@ function StartButton () {
   var Attend = database.ref(RoomID+"/Attendees").push(true);
   Attend.onDisconnect().remove();
 
-  // Add a listener that listens to the number of users in the room.
-  database.ref(RoomID+"/Attendees").on("value", ChooseState(snap));
+  // Look at the number of people in the room and decide what to do. Might be able to just put in ChooseState(snap), but not certain.
+  database.ref(RoomID+"/Attendees").once("value").then(function(snap) {
+    
+    ChooseState(snap) 
+  
+  });
 
+  // Add a listener for the state of the interaction.
   database.ref(RoomID+"/RunState").on("value", DecideCourse(snap));
 
 };
 
-// When the number of users changes...
+// When a user enters, the number of users in the room is checked and...
 function ChooseState (UserSnap) {
 
   // Save a variable that is the number of users.
   var CurrentUsers = UserSnap.numChildren();
 
+  // If the current user is the first...
   if (CurrentUsers === 1) {
 
+    // the current user is labeled "PlayerOne"
     if (LocalID === "") {LocalID = "PlayerOne";}
 
+    // TODO The first person should get the list of restaurants and push it to the appropriate place on FireBase
+
+    // and the state on FireBase is set to "waiting" (for the second person)
     database.ref(RoomID+"/RunState").set({"state" : "waiting"});
 
+  // If the user entering is the second user, 
   } else if (CurrentUsers >= 2 && LocalState === "waiting") {
 
+    // the user entering is set to "PlayerTwo"
     if (LocalID === "") {LocalID = "PlayerTwo";}
 
-    PrepareDecisions();
+    // TODO the second person should retrieve the list of restaurants from FireBase and save it locally
 
+    // and the state on FireBase is set to "choosing."
     database.ref(RoomID+"/RunState").set({"state" : "choosing"});
 
   }
@@ -107,8 +120,14 @@ function DecideCourse (StateSnap) {
   // If you're waiting, don't do anything
   if (LocalState === "waiting") {}
 
-  // If you're choosing, present a new option
+  // If you're choosing for the first time, prepare the screen and present a new option
   else if (LocalState === "choosing") {
+
+    PrepareDecisions();
+    NewOption();
+
+  // if you're choosing for a subsequent time, just present a new option
+  } else if (LocalState === "rechoosing") {
 
     NewOption();
 
@@ -143,7 +162,7 @@ function NewOption () {
   LocalChoice = true;
   database.ref(RoomID+"/Choices/").set({});
 
-  // TODO Give directions and define a timer span.
+  // TODO Give directions and define a timer span. (should happen in PrepareDecisions)
 
   var TimeRemaining = 30;
 
@@ -166,24 +185,86 @@ function NewOption () {
 
 };
 
+// When thumbs up or down is pressed
+function ThumbButton () {
+
+  // Clear the interval running
+  clearInterval(CurrentTimer);
+
+  // Set the LocalChoice to the button
+  LocalChoice = $(this).attr("data-choice");
+
+  // And send that to FireBase
+  TransmitChoice (LocalChoice);
+
+}
+
 // Sends the choice the player has made to the database.
 function TransmitChoice (Choice) {
 
+  // Push the choice to FireBase
   // Need a conditional because apparently the first part of a set statement can't be a variable.
   if(LocalID === "PlayerOne") {
 
-      database.ref("RPS/Choices/").update({PlayerOne : Choice});
+      database.ref(RoomID + "/UserChoices").push({PlayerOne : Choice});
   
-  } else {
+  } else if (LocalID === "PlayerTwo") {
 
-      database.ref("RPS/Choices/").update({PlayerTwo : Choice});
+      database.ref(RoomID + "/UserChoices").push({PlayerTwo : Choice});
 
   }
-  
+
+  // Check to see if it's the first or second decision and set the state accordingly
+
+  database.ref(RoomID + "/UserChoices").once("value").then(function (snap){
+
+    console.log(snap.numChildren());
+
+    // if it's the first decision    
+    if (snap.numChildren() === 1) {
+
+      // change the state to "choosewait"
+      database.ref(RoomID+"/RunState").set({"state" : "choosewait"});
+
+    // if it's the second decision, set state to "chosen"
+    } else if (snap.numChildren() === 2) {
+
+      database.ref(RoomID+"/RunState").set({"state" : "chosen"});
+
+    }
+
+  })
+
 };
 
 // This evaluates the two choices
-function Evaluate () {};
+function Evaluate () {
+
+  // Use player one as the 'server' for deciding what the outcome of the choice was to avoid doubled setting of state on FireBase.
+  if (LocalID === "PlayerOne") {
+
+    // Get the decisions from FireBase
+    database.ref(RoomID + "/UserChoices").once("value").then(function (snap) {
+
+      // If both choices were true (thumbs up - TODO this may change depending on how the data ends up being stored on FireBase)
+      if (snap.val().PlayerOne && snap.val().PlayerTwo) {
+
+        // Set the state on FireBase to decided - ending the loop
+        database.ref(RoomID+"/RunState").set({"state" : "decided"});
+
+      // otherwise...
+      } else {
+
+        // Set the state on FireBase to rechoosing, which brings up a new option.
+        database.ref(RoomID+"/RunState").set({"state" : "rechoosing"});
+
+      }
+    
+    });
+
+  }
+
+};
 
 // This function displays the choice you've both agreed on.
 function DisplayResult () {};
