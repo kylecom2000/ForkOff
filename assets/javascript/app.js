@@ -15,12 +15,6 @@
 var LocalState = "waiting"
 var LocalID = "";
 
-var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
-var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
-
-var ZomatoQuery = "https://cors-ut-bootcamp.herokuapp.com/https://developers.zomato.com/api/v2.1/search?";
-
-
 // Local functions go below this line.
 // ======================================================================================
 
@@ -43,7 +37,7 @@ function ipLookUp () {
 }
 
 function zomatoLookup(lat,lon) {
-  console.log(lat, lon);
+  var rapid = new RapidAPI("default-application_5bd9ddc8e4b0d1763ed6b07c", "0b60f110-a5a7-4fe2-93af-42199127603c");
   rapid.call('Zomato', 'getLocationDetailsByCoordinates', { 
     'coordinates': `${lat}, ${lon}`,
     'apiKey': 'c30eca16c0c03ef51799b26e942490e3'
@@ -53,6 +47,7 @@ function zomatoLookup(lat,lon) {
      console.log(payload);
   }).on('error', function (payload) {
      /*YOUR CODE GOES HERE*/ 
+     console.log(payload);
   });
 }
 // When the user hits the start button
