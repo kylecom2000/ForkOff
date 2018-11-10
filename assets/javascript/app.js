@@ -14,6 +14,7 @@
 
 var LocalState = "waiting"
 var LocalID = "";
+var RoomID = "";
 
 var GoogleAPIkey = "AIzaSyA7b0Y8wH7Awthb9-CDlqAPtrr-Q2JCTVw";
 var ZomatoAPIkey = "c30eca16c0c03ef51799b26e942490e3";
@@ -59,8 +60,7 @@ function zomatoLookup(lat,lon) {
 function StartButton () {
 
   // Take their input and save it as a new Room ID
-  var RoomID = $("#room-info").val();
-
+  RoomID = $("#roomKey").val();
   // Add the current user to the list of attendees is the local room, and remove them if they disconnect.
   var Attend = database.ref(RoomID+"/Attendees").push(true);
   Attend.onDisconnect().remove();
@@ -73,7 +73,11 @@ function StartButton () {
   });
 
   // Add a listener for the state of the interaction.
-  database.ref(RoomID+"/RunState").on("value", DecideCourse(snap));
+  database.ref(RoomID+"/RunState").on("value", function(snap) {DecideCourse(snap)}, function(){
+
+    database.ref(RoomID+"/RunState").set ({"state" : LocalState});
+
+  });
 
 };
 
@@ -160,27 +164,27 @@ function DecideCourse (StateSnap) {
 function NewOption () {
 
   LocalChoice = true;
-  database.ref(RoomID+"/Choices/").set({});
+  database.ref(RoomID+"/UserChoices/").set(null);
 
   // TODO Give directions and define a timer span. (should happen in PrepareDecisions)
 
   var TimeRemaining = 30;
 
-  CurrentTimer = setInterval(function () {
+  // CurrentTimer = setInterval(function () {
 
-      TimeRemaining--;
-      TimerSpan.textContent = TimeRemaining;
+  //     TimeRemaining--;
+  //     TimerSpan.textContent = TimeRemaining;
 
-      // if time expires, pick a random choice.
-      if (TimeRemaining <= 0) {
+  //     // if time expires, pick a random choice.
+  //     if (TimeRemaining <= 0) {
 
-          clearInterval(CurrentTimer);
+  //         clearInterval(CurrentTimer);
           
-          TransmitChoice(LocalChoice);
+  //         TransmitChoice(LocalChoice);
 
-        }
+  //       }
 
-  }, 1000);
+  // }, 1000);
 
 
 };
@@ -206,11 +210,11 @@ function TransmitChoice (Choice) {
   // Need a conditional because apparently the first part of a set statement can't be a variable.
   if(LocalID === "PlayerOne") {
 
-      database.ref(RoomID + "/UserChoices").push({PlayerOne : Choice});
+      database.ref(RoomID + "/UserChoices").update({PlayerOne : Choice});
   
   } else if (LocalID === "PlayerTwo") {
 
-      database.ref(RoomID + "/UserChoices").push({PlayerTwo : Choice});
+      database.ref(RoomID + "/UserChoices").update({PlayerTwo : Choice});
 
   }
 
@@ -267,15 +271,29 @@ function Evaluate () {
 };
 
 // This function displays the choice you've both agreed on.
-function DisplayResult () {};
+function DisplayResult () {
+
+  // Remove the listener to the state before state gets deleted.
+  database.ref(RoomID+"/RunState").off();
+
+  // Clean the room from the FireBase (using PlayerTwo as the 'server')
+  if (LocalID === "PlayerTwo") {
+
+      database.ref(RoomID).remove();
+
+  }
+
+};
 
 // Local execution code goes below this line
 //=======================================================================================
 
 $(document).ready(function() {
 
-  $("#start-btn").on("click", function() {
+  $("#start-btn").on("click", function(event) {
 
+    // Since the button is a submit button, stop it from doing anything.
+    event.preventDefault();
     StartButton();
 
   })
