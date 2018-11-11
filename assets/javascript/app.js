@@ -19,7 +19,7 @@ var RoomID = "";
 // Local functions go below this line.
 // ======================================================================================
 
-function ipLookUp () {
+function ipLookUpZomatoReturn () {
   $.ajax('http://ip-api.com/json')
   .then(
       function success(response) {
@@ -28,6 +28,7 @@ function ipLookUp () {
           console.log('User\'s long is: ', response.lon);
           var userLat = response.lat;
           var userLon = response.lon;
+          // Run zomato function with lat and long. 
           zomatoLookup(userLat,userLon);
       },
 
@@ -46,9 +47,12 @@ function zomatoLookup(lat,lon) {
   }).on('success', function (payload) {
      /*YOUR CODE GOES HERE*/ 
      console.log(payload);
+     // store paylod in firebase
+     fireBaseTheseResturants(payload.result.nearby_restaurants);
   }).on('error', function (payload) {
      /*YOUR CODE GOES HERE*/ 
      console.log(payload);
+     console.log("ERROR on zomatoLookup function");
   });
 }
 // When the user hits the start button
@@ -89,6 +93,7 @@ function ChooseState (UserSnap) {
     if (LocalID === "") {LocalID = "PlayerOne";}
 
     // TODO The first person should get the list of restaurants and push it to the appropriate place on FireBase
+    ipLookUpZomatoReturn ();
 
     // and the state on FireBase is set to "waiting" (for the second person)
     database.ref(RoomID+"/RunState").set({"state" : "waiting"});
@@ -109,7 +114,16 @@ function ChooseState (UserSnap) {
 };
 
 // This function sets up the screen (creates the divs and buttons) for the choosing phase.
-function PrepareDecisions () {};
+function PrepareDecisions () {
+  // Clear HTML.
+  $("main-content").empty();
+  $("form-group").empty();
+
+  // Add choices to main-content.
+  
+  // Append buttons under choices to main-content.
+  
+};
 
 // Depending on the stored state
 function DecideCourse (StateSnap) {
@@ -341,3 +355,8 @@ connectedRef.on("value", function(snap) {
     }
     
 });
+
+function fireBaseTheseResturants(payload) {
+  console.log("fireBaseTheseResturants has been run");
+  database.ref(RoomID + "/Restaurants").set(payload);
+};
