@@ -48,7 +48,7 @@ function zomatoLookup(lat,lon) {
      /*YOUR CODE GOES HERE*/ 
      console.log(payload);
      // store paylod in firebase
-     fireBaseTheseResturants(payload);
+     fireBaseTheseResturants(payload.result.nearby_restaurants);
   }).on('error', function (payload) {
      /*YOUR CODE GOES HERE*/ 
      console.log(payload);
@@ -358,5 +358,5 @@ connectedRef.on("value", function(snap) {
 
 function fireBaseTheseResturants(payload) {
   console.log("fireBaseTheseResturants has been run");
-  database.ref(RoomID + "/Restaurants").set(payload.result.nearby_resturants);
+  database.ref(RoomID + "/Restaurants").set(payload);
 };
