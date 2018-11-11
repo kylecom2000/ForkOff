@@ -7,16 +7,13 @@ body {
     background-size: 100%;
 }
 
-
 .jumbotron {
     background-color: rgba(173, 235, 235, 0.5);
     text-align: center;
     margin-bottom: 15px;
     padding-bottom: 35px;
     width: 100%;
-
 }
-
 
 img {
     overflow: hidden;
@@ -26,22 +23,68 @@ img {
     animation-name: flip;  
     background-color: rgba(173, 235, 235, 0);
     height: 200px;
-    width: 200px;
-   
+    width: 200px;   
 }
-
 
 h1 {
     
     font-size: 100px;
     letter-spacing: 7px;
     padding: 45px;
-    color: rgb(255,194,102);
+    color: rgb(255, 194, 102);
     text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
 }
 
+.sButton {
+    margin: 10px;
+	background: linear-gradient(to right, rgb(255, 230, 179), rgb(255, 170, 0));
+	color: white;
+	--width: 100px;
+	--height: calc(var(--width) / 3);
+	width: var(--width);
+	height: var(--height);
+	text-align: center;
+	line-height: var(--height);
+	font-size: calc(var(--height) / 2.5);
+	font-family: sans-serif;
+	letter-spacing: 0.2em;
+	border: 1px solid #fff;
+	border-radius: 2em;
+	transform: perspective(500px) rotateY(-15deg);
+	text-shadow: 6px 3px 2px rgb(0, 179, 179);
+	box-shadow: 2px 0 0 5px rgb(0, 179, 179);
+	transition: 0.5s;
+	position: relative;
+	overflow: hidden;
+}
 
+.sButton:hover {
+	transform: perspective(500px) rotateY(15deg);
+	text-shadow: -6px 3px 2px rgb(107, 129, 129);
+	box-shadow: -2px 0 0 5px rgb(214, 241, 241);
+}
 
+.sButton::before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to right, transparent, rgb(173, 235, 235), transparent);
+	left: -100%;
+	transition: 0.5s;
+}
+
+.sButton:hover::before {
+	left: 100%;
+}
+
+#roomKey{
+    background-color: rgb(255,194,102);
+    color: #000;
+    border-style: outset;
+    border-color: rgb(0, 179, 179);
+
+}
 
 @keyframes flip {
     from {
@@ -58,85 +101,83 @@ h1 {
           rotate3d(0, 1, 0, -190deg);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-      }
+    }
     
-      50% {
-        -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
-          rotate3d(0, 1, 0, -170deg);
-        transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
-          rotate3d(0, 1, 0, -170deg);
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-      }
+    50% {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
+        rotate3d(0, 1, 0, -170deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
+        rotate3d(0, 1, 0, -170deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    }
     
-      80% {
-        -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
-          rotate3d(0, 1, 0, 0deg);
-        transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
-          rotate3d(0, 1, 0, 0deg);
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-      }
-    
-      to {
-        -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-          rotate3d(0, 1, 0, 0deg);
-        transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
-        -webkit-animation-timing-function: ease-in;
-        animation-timing-function: ease-in;
-      }
+    80% {
+    -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
+        rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
+        rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
     }
 
-    .container {
-        background-color: rgba(126, 147, 153, 0.5);
-        color: whitesmoke;
+    to {
+    -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
+        rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
     }
+}
 
-    .form-group {
+.container {
+    background-color: rgba(126, 147, 153, 0.5);
+    color: whitesmoke;
+}
+
+.form-group {
+    text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    img {
+        display: flex;
+    }
+    .jumbotron {
+        padding-top: 60px; 
         text-align: center;
     }
 
-
-    @media screen and (max-width: 768px) {
-        img {
-            display: flex;
-        }
-        .jumbotron {
-            padding-top: 60px; 
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 60px;
-        }
-
-        body {
-            background: cover;
-            background-position: center;
-        }
+    h1 {
+        font-size: 60px;
     }
-    @media screen and (max-width: 375px) {
-        img{
-            display: none;
-        }
-        .jumbotron {
-            padding-top: 60px;
-        }
 
-        h1 {
-            font-size: 50px;
-            padding-left: 18px;
-        }
-        body {
-            background-size: cover;
-            background-position: center;
-        }
-        p {
-            color: white;
-            background-color: rgb(126, 147, 153);
-            opacity: 0.7;
-            width: 95%;
-            margin-top: 40px;
-        }  
+    body {
+        background: cover;
+        background-position: center;
     }
-    
+}
+@media screen and (max-width: 375px) {
+    img{
+        display: none;
+    }
+    .jumbotron {
+        padding-top: 60px;
+    }
+
+    h1 {
+        font-size: 50px;
+        padding-left: 18px;
+    }
+    body {
+        background-size: cover;
+        background-position: center;
+    }
+    p {
+        color: white;
+        background-color: rgb(126, 147, 153);
+        opacity: 0.7;
+        width: 95%;
+        margin-top: 40px;
+    }  
+}
