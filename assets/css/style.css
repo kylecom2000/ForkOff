@@ -152,13 +152,18 @@ p {
     font-size: 22px;
 }
 
+h4{
+    text-align: center;
+    font-size: 48px;
+}
+
 /* this is for the loader and need to center */
 .lds-hourglass {
     display: inline-block;
     position: relative;
     width: 64px;
     height: 64px;
-    margin-left: 45%;
+    margin-left: 47%;
 }
 
 .lds-hourglass:after {
