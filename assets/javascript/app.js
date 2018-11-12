@@ -15,6 +15,7 @@
 var LocalState = "waiting"
 var LocalID = "";
 var RoomID = "";
+var RestaurantArray = [];
 
 // Local functions go below this line.
 // ======================================================================================
@@ -55,28 +56,46 @@ function zomatoLookup(lat,lon) {
      console.log("ERROR on zomatoLookup function");
   });
 }
+
+function fireBaseTheseResturants(payload) {
+  console.log("fireBaseTheseResturants has been run");
+  database.ref(RoomID + "/Restaurants").set(payload);
+  RestaurantArray = payload;
+};
+
 // When the user hits the start button
 function StartButton () {
-
+	
   // Take their input and save it as a new Room ID
   RoomID = $("#roomKey").val();
-  // Add the current user to the list of attendees is the local room, and remove them if they disconnect.
-  var Attend = database.ref(RoomID+"/Attendees").push(true);
-  Attend.onDisconnect().remove();
-
-  // Look at the number of people in the room and decide what to do. Might be able to just put in ChooseState(snap), but not certain.
-  database.ref(RoomID+"/Attendees").once("value").then(function(snap) {
-    
-    ChooseState(snap) 
+	
+  // If they've entered a Room key, put them in that room
+	if (RoomID !== "") {
   
-  });
+  	// Add the current user to the list of attendees is the local room, and remove them if they disconnect.
+  	var Attend = database.ref(RoomID+"/Attendees").push(true);
+  	Attend.onDisconnect().remove();
 
-  // Add a listener for the state of the interaction.
-  database.ref(RoomID+"/RunState").on("value", function(snap) {DecideCourse(snap)}, function(){
+  	// Look at the number of people in the room and decide what to do. Might be able to just put in ChooseState(snap), but not certain.
+  	database.ref(RoomID+"/Attendees").once("value").then(function(snap) {
+    
+    	ChooseState(snap) 
+  
+  	});
 
-    database.ref(RoomID+"/RunState").set ({"state" : LocalState});
+  	// Add a listener for the state of the interaction.
+  	database.ref(RoomID+"/RunState").on("value", function(snap) {DecideCourse(snap)}, function(){
 
-  });
+    	database.ref(RoomID+"/RunState").set ({"state" : LocalState});
+
+  	});
+  
+  // If they haven't entered a roomkey, tell them they need to.
+  } else {
+  
+  	$("#roomKey").attr("placeholder", "You MUST enter a Room Key.");
+  
+  }
 
 };
 
@@ -92,7 +111,7 @@ function ChooseState (UserSnap) {
     // the current user is labeled "PlayerOne"
     if (LocalID === "") {LocalID = "PlayerOne";}
 
-    // TODO The first person should get the list of restaurants and push it to the appropriate place on FireBase
+    // The first person should get the list of restaurants and push it to the appropriate place on FireBase
     ipLookUpZomatoReturn ();
 
     // and the state on FireBase is set to "waiting" (for the second person)
@@ -104,7 +123,14 @@ function ChooseState (UserSnap) {
     // the user entering is set to "PlayerTwo"
     if (LocalID === "") {LocalID = "PlayerTwo";}
 
-    // TODO the second person should retrieve the list of restaurants from FireBase and save it locally
+    // The second person should retrieve the list of restaurants from FireBase and save it locally
+    database.ref(RoomID + "/Restaurants").once("value", function(snap){
+    
+    	// Take the snapshot of the value of that location, and save it as the local variable RestaurantArray
+      RestaurantArray = snap.val();
+    
+    
+    });
 
     // and the state on FireBase is set to "choosing."
     database.ref(RoomID+"/RunState").set({"state" : "choosing"});
@@ -115,23 +141,52 @@ function ChooseState (UserSnap) {
 
 // This function sets up the screen (creates the divs and buttons) for the choosing phase.
 function PrepareDecisions () {
+  
   // Clear HTML.
-  $("main-content").empty();
-  $("form-group").empty();
+  $(".container").empty();
 
-  // Add choices to main-content.
+  // Add different divs for each item
+  // #image-div
+  $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>")
+  // #name-div
+  $(".container").append("<div id=\"name-div\"></div>") 
+  // #rating-div
+  $(".container").append("<div id=\"rating-div\"></div>")
+  // #cusine-div
+  $(".container").append("<div id=\"cusine-div\"></div>")
+  // #thumbs-up
+  $(".container").append("<div id=\"thumbs-up\"></div>")
+  // #thumbs-down
+  $(".container").append("<div id=\"thumbs-down\"></div>")
   
   // Append buttons under choices to main-content.
   
 };
+
+
+// Make function for waiting room
+function waitingScreen() {
+
+  console.log($(".container"));
+	$(".container").empty();
+  //Display waitingscreen
+  $(".container").append("<div class=\"lds-hourglass\"></div>").append("<br>");
+  $(".container").append("<h4>Waiting for others</h4>").append("<br>");
+  
+}
+
 
 // Depending on the stored state
 function DecideCourse (StateSnap) {
 
   LocalState = StateSnap.val().state;
 
-  // If you're waiting, don't do anything
-  if (LocalState === "waiting") {}
+  // If you're waiting, Inform the user that they're waiting.
+  if (LocalState === "waiting") {
+  
+  	waitingScreen();
+  
+  }
 
   // If you're choosing for the first time, prepare the screen and present a new option
   else if (LocalState === "choosing") {
@@ -355,8 +410,3 @@ connectedRef.on("value", function(snap) {
     }
     
 });
-
-function fireBaseTheseResturants(payload) {
-  console.log("fireBaseTheseResturants has been run");
-  database.ref(RoomID + "/Restaurants").set(payload);
-};
