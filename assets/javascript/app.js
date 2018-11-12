@@ -158,11 +158,11 @@ function PrepareDecisions () {
   // #cusine-div
   $(".container").append("<div id=\"cuisine-div\"></div>");
   // #thumbs-up
-  $(".container").append("<div id=\"thumbs-up\"></div>");
+  $(".container").append("<div id=\"thumbs-up\"><img src=\"assets/images/thumbsUp.png\"></div>");
   $("#thumbs-up").addClass("thumbs");
   $("#thumbs-up").attr("value", "true");
   // #thumbs-down
-  $(".container").append("<div id=\"thumbs-down\"></div>");
+  $(".container").append("<div id=\"thumbs-down\"><img src=\"assets/images/thumbsDown.png\"></div>");
   $("#thumbs-down").addClass("thumbs");
   $("#thumbs-down").attr("value", "false");
   $(".thumbs").on("click", ThumbButton);
@@ -279,7 +279,7 @@ function NewOption () {
 function ThumbButton () {
 
   // Clear the interval running
-  clearInterval(CurrentTimer);
+  // clearInterval(CurrentTimer);
 
   // Set the LocalChoice to the button
   if ($(this).attr("value") === "false") {
