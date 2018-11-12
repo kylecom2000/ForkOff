@@ -150,7 +150,7 @@ function PrepareDecisions () {
   // Add different divs for each item
   // #image-div
   $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>");
-  $("#rest-img").attr("onerror", "assets/images/favicon.gif");
+  $("#rest-img").attr("onerror", "../assets/images/favicon.gif");
   // #name-div
   $(".container").append("<div id=\"name-div\"></div>");
   // #rating-div
@@ -240,8 +240,8 @@ function NewOption () {
   database.ref(RoomID+"/UserChoices/").set(null);
 
   // Extract the current values and save them as a local variable
-  debugger;
   var CurrentImg = RestaurantArray[ChoiceCounter].restaurant.featured_image;
+  if (CurrentImg = "") {CurrentImg = "../assets/images/favicon.gif";}
   var CurrentName = RestaurantArray[ChoiceCounter].restaurant.name;
   var CurrentCuisine = RestaurantArray[ChoiceCounter].restaurant.cuisines;
   var CurrentRating = RestaurantArray[ChoiceCounter].restaurant.user_rating.aggregate_rating;
@@ -366,11 +366,24 @@ function DisplayResult () {
 
   // Remove the listener to the state before state gets deleted.
   database.ref(RoomID+"/RunState").off();
-  // https://giphy.com/gifs/party-the-office-hard-l0MYt5jPR6QX5pnqM
+
+  // Clear the content and add celebration and information.
+  $(".container").empty();
+  $(".container").append("<div id=\"image-div\"><img id=\"result-img\" src=\"https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif\"></div>");
+  $(".container").append("<h3>YOU FORKED OFF!</h3>");
+
+  var NameDiv = $("<div>")
+  NameDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.name)  
+  $(".container").append(NameDiv);
+  
+  var AddressDiv = $("<div>");
+  AddressDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.location.address);
+  $(".container").append(AddressDiv);
+  
   // Clean the room from the FireBase (using PlayerTwo as the 'server')
   if (LocalID === "PlayerTwo") {
 
-      database.ref(RoomID).remove();
+      setTimeout ( function () {database.ref(RoomID).remove()}, 1000);
 
   }
 
