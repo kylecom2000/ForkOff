@@ -16,6 +16,7 @@ var LocalState = "waiting"
 var LocalID = "";
 var RoomID = "";
 var RestaurantArray = [];
+var ChoiceCounter = 0;
 
 // Local functions go below this line.
 // ======================================================================================
@@ -111,6 +112,7 @@ function ChooseState (UserSnap) {
     // the current user is labeled "PlayerOne"
     if (LocalID === "") {LocalID = "PlayerOne";}
 
+    console.log("I'm player one.");
     // The first person should get the list of restaurants and push it to the appropriate place on FireBase
     ipLookUpZomatoReturn ();
 
@@ -126,15 +128,15 @@ function ChooseState (UserSnap) {
     // The second person should retrieve the list of restaurants from FireBase and save it locally
     database.ref(RoomID + "/Restaurants").once("value", function(snap){
     
-    	// Take the snapshot of the value of that location, and save it as the local variable RestaurantArray
-      RestaurantArray = snap.val();
-    
-    
-    });
+   	// Take the snapshot of the value of that location, and save it as the local variable RestaurantArray
+    RestaurantArray = snap.val();
 
     // and the state on FireBase is set to "choosing."
     database.ref(RoomID+"/RunState").set({"state" : "choosing"});
+    
+    });
 
+    
   }
 
 };
@@ -147,19 +149,23 @@ function PrepareDecisions () {
 
   // Add different divs for each item
   // #image-div
-  $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>")
+  $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>");
+  $("#rest-img").attr("onerror", "assets/images/favicon.gif");
   // #name-div
-  $(".container").append("<div id=\"name-div\"></div>") 
+  $(".container").append("<div id=\"name-div\"></div>");
   // #rating-div
-  $(".container").append("<div id=\"rating-div\"></div>")
+  $(".container").append("<div id=\"rating-div\"></div>");
   // #cusine-div
-  $(".container").append("<div id=\"cusine-div\"></div>")
+  $(".container").append("<div id=\"cuisine-div\"></div>");
   // #thumbs-up
-  $(".container").append("<div id=\"thumbs-up\"></div>")
+  $(".container").append("<div id=\"thumbs-up\"></div>");
+  $("#thumbs-up").addClass("thumbs");
+  $("#thumbs-up").attr("value", "true");
   // #thumbs-down
-  $(".container").append("<div id=\"thumbs-down\"></div>")
-  
-  // Append buttons under choices to main-content.
+  $(".container").append("<div id=\"thumbs-down\"></div>");
+  $("#thumbs-down").addClass("thumbs");
+  $("#thumbs-down").attr("value", "false");
+  $(".thumbs").on("click", ThumbButton);
   
 };
 
@@ -227,13 +233,29 @@ function DecideCourse (StateSnap) {
 // This puts a new option on the screen, corresponding to some kind of index.
 function NewOption () {
 
+  // Set the default selection to 'yes'
   LocalChoice = true;
+
+  // Clear out the choices from the last restaurant.
   database.ref(RoomID+"/UserChoices/").set(null);
+
+  // Extract the current values and save them as a local variable
+  debugger;
+  var CurrentImg = RestaurantArray[ChoiceCounter].restaurant.featured_image;
+  var CurrentName = RestaurantArray[ChoiceCounter].restaurant.name;
+  var CurrentCuisine = RestaurantArray[ChoiceCounter].restaurant.cuisines;
+  var CurrentRating = RestaurantArray[ChoiceCounter].restaurant.user_rating.aggregate_rating;
+    console.log(CurrentImg, CurrentName, CurrentCuisine, CurrentRating);
+  $("#rest-img").attr("src", CurrentImg);
+  $("#name-div").text(CurrentName);
+  $("#cuisine-div").text("Kind of food: " + CurrentCuisine);
+  $("#rating-div").text("Rating: " + CurrentRating);
 
   // TODO Give directions and define a timer span. (should happen in PrepareDecisions)
 
   var TimeRemaining = 30;
-
+  
+  // Set a timer - commented out for now to facilitate testing.
   // CurrentTimer = setInterval(function () {
 
   //     TimeRemaining--;
@@ -250,7 +272,7 @@ function NewOption () {
 
   // }, 1000);
 
-
+  ChoiceCounter++;
 };
 
 // When thumbs up or down is pressed
@@ -260,7 +282,12 @@ function ThumbButton () {
   clearInterval(CurrentTimer);
 
   // Set the LocalChoice to the button
-  LocalChoice = $(this).attr("data-choice");
+  if ($(this).attr("value") === "false") {
+
+    LocalChoice = false;
+
+  };
+
 
   // And send that to FireBase
   TransmitChoice (LocalChoice);
@@ -339,7 +366,7 @@ function DisplayResult () {
 
   // Remove the listener to the state before state gets deleted.
   database.ref(RoomID+"/RunState").off();
-
+  // https://giphy.com/gifs/party-the-office-hard-l0MYt5jPR6QX5pnqM
   // Clean the room from the FireBase (using PlayerTwo as the 'server')
   if (LocalID === "PlayerTwo") {
 
