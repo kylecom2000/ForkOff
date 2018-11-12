@@ -152,14 +152,21 @@ p {
     font-size: 22px;
 }
 
+h4{
+    text-align: center;
+    font-size: 48px;
+}
+
 /* this is for the loader and need to center */
 .lds-hourglass {
     display: inline-block;
     position: relative;
     width: 64px;
     height: 64px;
-  }
-  .lds-hourglass:after {
+    margin-left: 47%;
+}
+
+.lds-hourglass:after {
     content: " ";
     display: block;
     border-radius: 50%;
@@ -170,8 +177,9 @@ p {
     border: 26px solid #fff;
     border-color: #fff transparent #fff transparent;
     animation: lds-hourglass 1.2s infinite;
-  }
-  @keyframes lds-hourglass {
+}
+
+@keyframes lds-hourglass {
     0% {
       transform: rotate(0);
       animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
@@ -183,18 +191,24 @@ p {
     100% {
       transform: rotate(1800deg);
     }
-  }
+}
 
-  #rest-img{
-      width: 100px;
-      height: auto;
-  }
+#rest-img{
+    width: 100px;
+    height: auto;
+}
 
-  #thumbs-up, #thumbs-down{
-      width: 50px;
-      height: auto;
-  }
+#thumbs-up {
+    background-image: url("../images/thumbsUp.png");
+    width: 50px;
+    height: auto;
+}
 
+#thumbs-down{
+    background-image: url("../images/thumbsDown.png");
+    width: 50px;
+    height: auto;
+}
 
 @media screen and (max-width: 768px) {
     img {
