@@ -140,7 +140,7 @@ h2, h3 {
 
 .container {
     text-align: center;   /*need to add*/
-    overflow: auto;       /*need to add*/
+    /* overflow: auto;       need to add */
     margin-top: 50px;
     background-color: rgba(126, 147, 153, 0.5);
     color: rgb(243, 193, 118);  
@@ -257,11 +257,11 @@ h4{
         background: cover;
         background-position: center;
     }
-    #thumbs-up-img{
-        margin-left: 30%;
+    #thumbs-up{
+        margin-left: 15%;
     }
-    #thumbs-down-img{
-        margin-right: 30%;
+    #thumbs-down{
+        margin-right: 15%;
     }
 }
 
