@@ -25,7 +25,6 @@ function ipLookUpZomatoReturn () {
   $.ajax('http://ip-api.com/json')
   .then(
       function success(response) {
-          console.log('response: ', response);
           console.log('User\'s lat is: ', response.lat);
           console.log('User\'s long is: ', response.lon);
           var userLat = response.lat;
@@ -47,19 +46,21 @@ function zomatoLookup(lat,lon) {
     'apiKey': 'c30eca16c0c03ef51799b26e942490e3'
   
   }).on('success', function (payload) {
-     /*YOUR CODE GOES HERE*/ 
-     console.log(payload);
+     
      // store paylod in firebase
      fireBaseTheseResturants(payload.result.nearby_restaurants);
-  }).on('error', function (payload) {
-     /*YOUR CODE GOES HERE*/ 
+
+    }).on('error', function (payload) {
+
      console.log(payload);
      console.log("ERROR on zomatoLookup function");
   });
 }
 
 function fireBaseTheseResturants(payload) {
+  
   console.log("fireBaseTheseResturants has been run");
+  
   database.ref(RoomID + "/Restaurants").set(payload);
   RestaurantArray = payload;
 };
@@ -112,7 +113,6 @@ function ChooseState (UserSnap) {
     // the current user is labeled "PlayerOne"
     if (LocalID === "") {LocalID = "PlayerOne";}
 
-    console.log("I'm player one.");
     // The first person should get the list of restaurants and push it to the appropriate place on FireBase
     ipLookUpZomatoReturn ();
 
@@ -158,11 +158,11 @@ function PrepareDecisions () {
   // #cusine-div
   $(".container").append("<div id=\"cuisine-div\"></div>");
   // #thumbs-up
-  $(".container").append("<div id=\"thumbs-up\"><img src=\"assets/images/thumbsUp.png\"></div>");
+  $(".container").append("<div id=\"thumbs-up\"><img src=\"assets/images/thumbsUp.png\" id=\"thumbs-up-img\" class=\"thumb-img\"></div>");
   $("#thumbs-up").addClass("thumbs");
   $("#thumbs-up").attr("value", "true");
   // #thumbs-down
-  $(".container").append("<div id=\"thumbs-down\"><img src=\"assets/images/thumbsDown.png\"></div>");
+  $(".container").append("<div id=\"thumbs-down\"><img src=\"assets/images/thumbsDown.png\" id=\"thumbs-down-img\" class=\"thumb-img\"></div>");
   $("#thumbs-down").addClass("thumbs");
   $("#thumbs-down").attr("value", "false");
   $(".thumbs").on("click", ThumbButton);
@@ -173,11 +173,14 @@ function PrepareDecisions () {
 // Make function for waiting room
 function waitingScreen() {
 
-  console.log($(".container"));
 	$(".container").empty();
+  
   //Display waitingscreen
-  $(".container").append("<div class=\"lds-hourglass\"></div>").append("<br>");
-  $(".container").append("<h4>Waiting for others</h4>").append("<br>");
+  $(".container").append("<div class=\"lds-hourglass\"></div>");
+  var WaitMessage = $("<h4>");
+  WaitMessage.text("Waiting for others. Please give them your Room Key: " + RoomID);
+  $(".container").append(WaitMessage);
+
   
 }
 
@@ -245,7 +248,8 @@ function NewOption () {
   var CurrentName = RestaurantArray[ChoiceCounter].restaurant.name;
   var CurrentCuisine = RestaurantArray[ChoiceCounter].restaurant.cuisines;
   var CurrentRating = RestaurantArray[ChoiceCounter].restaurant.user_rating.aggregate_rating;
-    console.log(CurrentImg, CurrentName, CurrentCuisine, CurrentRating);
+
+  // Apply those values to the display.
   $("#rest-img").attr("src", CurrentImg);
   $("#name-div").text(CurrentName);
   $("#cuisine-div").text("Kind of food: " + CurrentCuisine);
@@ -312,8 +316,6 @@ function TransmitChoice (Choice) {
   // Check to see if it's the first or second decision and set the state accordingly
 
   database.ref(RoomID + "/UserChoices").once("value").then(function (snap){
-
-    console.log(snap.numChildren());
 
     // if it's the first decision    
     if (snap.numChildren() === 1) {

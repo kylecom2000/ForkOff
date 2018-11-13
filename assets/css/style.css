@@ -198,14 +198,7 @@ h4{
     height: auto;
 }
 
-#thumbs-up {
-    background-image: url("../images/thumbsUp.png");
-    width: 50px;
-    height: 50px;
-}
-
-#thumbs-down{
-    background-image: url("../images/thumbsDown.png");
+.thumbs, .thumb-img {
     width: 50px;
     height: 50px;
 }
