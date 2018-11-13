@@ -22,7 +22,7 @@ var ChoiceCounter = 0;
 // ======================================================================================
 
 function ipLookUpZomatoReturn () {
-  $.ajax('http://ip-api.com/json')
+  $.ajax('https://ip-api.com/json')
   .then(
       function success(response) {
           console.log('User\'s lat is: ', response.lat);
