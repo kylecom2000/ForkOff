@@ -1,7 +1,7 @@
 html, body {
     width: 100%;
 }
-
+/*body image*/
 body {
     background-image: url("../images/kenny-luo-649778-unsplash.jpg");
     background-size: 100%;
@@ -128,13 +128,12 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-}  /*end of the ai
+}  /*end of the animation*/
 
 h2, h3 {
     color: rgb(243, 193, 118);
     text-shadow: 0 0 1px rgb(41, 39, 39), -1px -1px 1px rgb(41, 39, 39), 1px 0 1px rgb(41, 39, 39), 1px 1px 1px rgb(41, 39, 39);
 }
-
 
 .container {
     margin-top: 50px;
@@ -153,8 +152,7 @@ p {
     font-size: 22px;
 }
 
-h4{
-    text-align: center;
+h4 {
     font-size: 48px;
 }
 
@@ -203,9 +201,9 @@ h4{
     width: 50px;
     height: 50px;
 }
-
+/* styles for the ipad size*/
 @media screen and (max-width: 768px) {
-    img {
+    #left-fork, #right-fork {
         display: flex;
     }
     .jumbotron {
@@ -222,6 +220,7 @@ h4{
         background-position: center;
     }
 }
+/*styles for the phone size*/
 @media screen and (max-width: 414px) {
     #left-fork, #right-fork{
         display: none;
