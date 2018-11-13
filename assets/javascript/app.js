@@ -20,7 +20,7 @@ var ChoiceCounter = 0;
 
 // Local functions go below this line.
 // ======================================================================================
-
+// HTTPS or HTTP?
 function ipLookUpZomatoReturn () {
   $.ajax('https://ip-api.com/json')
   .then(
