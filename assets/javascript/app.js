@@ -15,7 +15,7 @@
 var LocalState = "waiting";
 var LocalID = "";
 var RoomID = "";
-var RestaurantArray = [{}, {restaurant: {featured_image: "https://b.zmtcdn.com/data/res_imagery/16917945_RESTAURANT_3432af73a7e14385a567973ebc51be1f_c.jpg?fit=around%7C1200%3A464&crop=1200%3A464%3B0%2C0", name: "Snarfs", cuisines: "Sandwiches, Other Stuff", user_rating: {aggregate_rating: "3 stars"}}}];
+var RestaurantArray = [];
 var ChoiceCounter = 0;
 var userLat = "";
 var userLon = "";
@@ -25,6 +25,41 @@ var ipapikey = "3d8cbd8859f45c2a81b9aea05d1897dd";
 var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9aea05d1897dd"
 // Local functions go below this line.
 // ======================================================================================
+
+function InitGeo () {
+
+  GoogleDirections = new google.maps.DirectionsService();
+  GoogleDisplay = new google.maps.DirectionsRenderer();
+  
+}
+
+function GetDirections() {
+  
+  var UserLoc = new google.maps.LatLng(userLat, userLng);
+  var mapOptions = {
+    zoom: 8,
+    center: UserLoc
+  };
+  var RestMap = new google.maps.Map(document.getElementById("map-div"), mapOptions);
+  GoogleDisplay.setMap(RestMap);
+
+  var start = new google.maps.LatLong(userLat,userLng);
+  var end = new google.maps.LatLng(RestaurantArray[ChoiceCounter-1].restaurant.location.latitude, RestaurantArray[ChoiceCounter-1].restaurant.location.longitude);
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: "DRIVING"
+  };
+  GoogleDirections.route(request, function (result, status) {
+
+    if (status=="OK") {
+      GoogleDisplay.setDirections(result);
+
+    }
+
+  });
+};
+
 
 function locationFeedToZomato () {
       console.log("locationFeedToZomato function has been called")
@@ -155,7 +190,7 @@ function PrepareDecisions () {
   // Add different divs for each item
   // #image-div
   $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>");
-  $("#rest-img").attr("onerror", "../assets/images/favicon.gif");
+  $("#rest-img").attr("onerror", "assets/images/favicon.gif");
   // #name-div
   $(".container").append("<div id=\"name-div\"></div>");
   // #rating-div
@@ -163,11 +198,11 @@ function PrepareDecisions () {
   // #cusine-div
   $(".container").append("<div id=\"cuisine-div\"></div>");
   // #thumbs-up
-  $(".container").append("<div id=\"thumbs-up\"><img src=\"assets/images/thumbsUp.png\" id=\"thumbs-up-img\" class=\"thumb-img\"></div>");
+  $(".container").append("<div id=\"thumbs-up\"><img src=\"assets/images/greenUp.png\" id=\"thumbs-up-img\" class=\"thumb-img\"></div>");
   $("#thumbs-up").addClass("thumbs");
   $("#thumbs-up").attr("value", "true");
   // #thumbs-down
-  $(".container").append("<div id=\"thumbs-down\"><img src=\"assets/images/thumbsDown.png\" id=\"thumbs-down-img\" class=\"thumb-img\"></div>");
+  $(".container").append("<div id=\"thumbs-down\"><img src=\"assets/images/redDown.png\" id=\"thumbs-down-img\" class=\"thumb-img\"></div>");
   $("#thumbs-down").addClass("thumbs");
   $("#thumbs-down").attr("value", "false");
   $(".thumbs").on("click", ThumbButton);
@@ -386,12 +421,20 @@ function DisplayResult () {
   $(".container").append("<h3>YOU FORKED OFF!</h3>");
 
   var NameDiv = $("<div>")
-  NameDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.name)  
+  NameDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.name) 
+  NameDiv.attr("id", "choice-div");
   $(".container").append(NameDiv);
   
   var AddressDiv = $("<div>");
   AddressDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.location.address);
+  AddressDiv.attr("id", "address-div");
   $(".container").append(AddressDiv);
+
+  var MapDiv = $("<div>");
+  MapDiv.attr("id", "map-div");
+  $(".container").append(AddressDiv);
+  
+  GetDirections();
   
   // Clean the room from the FireBase (using PlayerTwo as the 'server')
   if (LocalID === "PlayerTwo") {
