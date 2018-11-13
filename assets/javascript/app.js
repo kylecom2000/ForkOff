@@ -12,19 +12,25 @@
 // Local variables go below this line
 // ===================================================================================
 
-var LocalState = "waiting"
+var LocalState = "waiting";
 var LocalID = "";
 var RoomID = "";
 var RestaurantArray = [];
 var ChoiceCounter = 0;
 
+
+var ipapikey = "3d8cbd8859f45c2a81b9aea05d1897dd";
+
+var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9aea05d1897dd"
 // Local functions go below this line.
 // ======================================================================================
 // HTTPS or HTTP?
-function ipLookUpZomatoReturn () {
-  $.ajax('https://cors-ut-bootcamp.herokuapp.com/http://ip-api.com/json')
+// 'https://cors-ut-bootcamp.herokuapp.com/http://ip-api.com/json'
+function ipLookUpZomatoReturn (NewAPIURL) {
+  $.ajax()
   .then(
       function success(response) {
+        console.log(response)
           console.log('User\'s lat is: ', response.lat);
           console.log('User\'s long is: ', response.lon);
           var userLat = response.lat;
@@ -244,7 +250,7 @@ function NewOption () {
 
   // Extract the current values and save them as a local variable
   var CurrentImg = RestaurantArray[ChoiceCounter].restaurant.featured_image;
-  if (CurrentImg = "") {CurrentImg = "../assets/images/favicon.gif";}
+  if (CurrentImg = "") {CurrentImg = "assets/images/favicon.gif";}
   var CurrentName = RestaurantArray[ChoiceCounter].restaurant.name;
   var CurrentCuisine = RestaurantArray[ChoiceCounter].restaurant.cuisines;
   var CurrentRating = RestaurantArray[ChoiceCounter].restaurant.user_rating.aggregate_rating;
@@ -277,6 +283,11 @@ function NewOption () {
   // }, 1000);
 
   ChoiceCounter++;
+  if (ChoiceCounter === RestaurantArray.length + 1) {
+
+    console.log("No decision!")
+    break;
+  }
 };
 
 // When thumbs up or down is pressed
@@ -441,6 +452,7 @@ connectedRef.on("value", function(snap) {
 
     // If they are connected..
     if (snap.val()) {
+      console.log("TEST");
 
         // Add user to the connections list.
         PersonalIDObj = connectionsRef.push(true);

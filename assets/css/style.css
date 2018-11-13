@@ -14,7 +14,7 @@ body {
     padding-bottom: 35px;
     width: 100%;
 }
-
+/* Adjusts the fork images */
 #left-fork, #right-fork {
     overflow: hidden;
     mix-blend-mode: multiply;
@@ -25,7 +25,7 @@ body {
     height: 200px;
     width: 200px;   
 }
-
+/* Styling for the title*/
 h1 {
     font-size: 100px;
     letter-spacing: 7px;
@@ -33,7 +33,7 @@ h1 {
     color: rgb(255, 194, 102);
     text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
 }
-
+/* Styles the start button on the initial page*/
 .sButton {
     margin: 10px;
 	background: linear-gradient(to right, rgb(255, 230, 179), rgb(255, 170, 0));
@@ -82,9 +82,13 @@ h1 {
     color: rgb(61, 57, 53);
     border-style: outset;
     border-color: rgb(117, 207, 207);
-
 }
 
+#label-key{
+    color: rgb(117, 207, 207);
+}
+
+/* This is to spin the forks in the jumbotron */
 @keyframes flip {
     from {
       -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
@@ -100,8 +104,7 @@ h1 {
           rotate3d(0, 1, 0, -190deg);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-    }
-    
+    }    
     50% {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
         rotate3d(0, 1, 0, -170deg);
@@ -109,8 +112,7 @@ h1 {
         rotate3d(0, 1, 0, -170deg);
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
-    }
-    
+    }    
     80% {
     -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -119,7 +121,6 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-
     to {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -127,7 +128,7 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-}
+}  /*end of the ai
 
 h2, h3 {
     color: rgb(243, 193, 118);
@@ -138,7 +139,7 @@ h2, h3 {
 .container {
     margin-top: 50px;
     background-color: rgba(126, 147, 153, 0.5);
-    color: rgb(91, 212, 212);
+    color: rgb(243, 193, 118);
     text-shadow: 0 0 0.6px rgb(41, 39, 39), -1px -1px 0.6px rgb(41, 39, 39), 1px 0 0.6px rgb(41, 39, 39), 1px 1px 0.6px rgb(41, 39, 39);
 }
 
@@ -221,8 +222,8 @@ h4{
         background-position: center;
     }
 }
-@media screen and (max-width: 375px) {
-    img{
+@media screen and (max-width: 414px) {
+    #left-fork, #right-fork{
         display: none;
     }
     .jumbotron {
