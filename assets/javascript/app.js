@@ -17,20 +17,14 @@ var LocalID = "";
 var RoomID = "";
 var RestaurantArray = [];
 var ChoiceCounter = 0;
-
+var userLat = "";
+var userLon = "";
 
 var ipapikey = "3d8cbd8859f45c2a81b9aea05d1897dd";
 
 var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9aea05d1897dd"
 // Local functions go below this line.
 // ======================================================================================
-// HTTPS or HTTP?
-// var ip = '134.201.250.155'
-// var access_key = 'YOUR_ACCESS_KEY';
-// 'https://cors-ut-bootcamp.herokuapp.com/http://ip-api.com/json'
-// url: 'https://api.ipapi.com/' + ip + '?access_key=' + access_key,   
-//     dataType: 'jsonp',
-//     success: function(json) {
 
 function InitGeo () {
 
@@ -64,36 +58,25 @@ function GetDirections() {
     }
 
   });
+};
+
+
+function locationFeedToZomato () {
+      console.log("locationFeedToZomato function has been called")
+      // navigator geolocation stuff
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(MyPosition);
+      } else {
+        alert ("NO LOCATION, NO APP FOR YOU");
+        }
 }
 
-
-function ipLookUpZomatoReturn () {
-  $.ajax({"url": NewAPIURL,
-          "dataType": "jsonp"})
-          .then(function(response){
-            console.log(response);
-            console.log('User\'s lat is: ', response.latitude);
-            console.log('User\'s long is: ', response.longitude);
-            var userLat = response.latitude;
-            var userLon = response.longitude;
-            // Run zomato function with lat and long. 
-            zomatoLookup(userLat,userLon);
-            });
-  // .then(
-  //     function success(response) {
-  //         console.log(response);
-  //         console.log('User\'s lat is: ', response.latitude);
-  //         console.log('User\'s long is: ', response.longitude);
-  //         var userLat = response.latitude;
-  //         var userLon = response.longitude;
-  //         // Run zomato function with lat and long. 
-  //         zomatoLookup(userLat,userLon);
-  //     },
-
-  //     function fail(data, status) {
-  //         console.log('Request failed.  Returned status of', status);
-  //     }  
-  // );
+function MyPosition(position) {
+    console.log(position.coords.latitude +"and"+ position.coords.longitude);
+    userLat = position.coords.latitude; // lat from navigator
+    userLon = position.coords.longitude; // long from naigator
+    console.log(userLat + "and" + userLon);
+    zomatoLookup(userLat, userLon);
 }
 
 function zomatoLookup(lat,lon) {
@@ -171,7 +154,7 @@ function ChooseState (UserSnap) {
     if (LocalID === "") {LocalID = "PlayerOne";}
 
     // The first person should get the list of restaurants and push it to the appropriate place on FireBase
-    ipLookUpZomatoReturn ();
+    locationFeedToZomato ();
 
     // and the state on FireBase is set to "waiting" (for the second person)
     database.ref(RoomID+"/RunState").set({"state" : "waiting"});
@@ -339,6 +322,7 @@ function NewOption () {
     console.log("No decision!")
 
   }
+
 };
 
 // When thumbs up or down is pressed
