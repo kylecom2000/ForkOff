@@ -25,24 +25,40 @@ var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9
 // Local functions go below this line.
 // ======================================================================================
 // HTTPS or HTTP?
+// var ip = '134.201.250.155'
+// var access_key = 'YOUR_ACCESS_KEY';
 // 'https://cors-ut-bootcamp.herokuapp.com/http://ip-api.com/json'
+// url: 'https://api.ipapi.com/' + ip + '?access_key=' + access_key,   
+//     dataType: 'jsonp',
+//     success: function(json) {
 function ipLookUpZomatoReturn (NewAPIURL) {
-  $.ajax()
-  .then(
-      function success(response) {
-        console.log(response)
-          console.log('User\'s lat is: ', response.lat);
-          console.log('User\'s long is: ', response.lon);
-          var userLat = response.lat;
-          var userLon = response.lon;
+  $.ajax({"url": NewAPIURL,
+          dataType : "jsonp", 
+          success: function(response){
+          console.log(response);
+          console.log('User\'s lat is: ', response.latitude);
+          console.log('User\'s long is: ', response.longitude);
+          var userLat = response.latitude;
+          var userLon = response.longitude;
           // Run zomato function with lat and long. 
           zomatoLookup(userLat,userLon);
-      },
+          }
+        });
+  // .then(
+  //     function success(response) {
+  //         console.log(response);
+  //         console.log('User\'s lat is: ', response.latitude);
+  //         console.log('User\'s long is: ', response.longitude);
+  //         var userLat = response.latitude;
+  //         var userLon = response.longitude;
+  //         // Run zomato function with lat and long. 
+  //         zomatoLookup(userLat,userLon);
+  //     },
 
-      function fail(data, status) {
-          console.log('Request failed.  Returned status of', status);
-      }  
-  );
+  //     function fail(data, status) {
+  //         console.log('Request failed.  Returned status of', status);
+  //     }  
+  // );
 }
 
 function zomatoLookup(lat,lon) {
@@ -452,6 +468,7 @@ connectedRef.on("value", function(snap) {
 
     // If they are connected..
     if (snap.val()) {
+      console.log("TEST");
       console.log("TEST");
 
         // Add user to the connections list.
