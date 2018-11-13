@@ -15,7 +15,7 @@ body {
     width: 100%;
 }
 
-img {
+#left-fork, #right-fork {
     overflow: hidden;
     mix-blend-mode: multiply;
     animation-duration: 2s;
