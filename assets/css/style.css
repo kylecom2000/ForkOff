@@ -1,7 +1,7 @@
 html, body {
     width: 100%;
 }
-/*body image*/
+
 body {
     background-image: url("../images/kenny-luo-649778-unsplash.jpg");
     background-size: 100%;
@@ -14,7 +14,7 @@ body {
     padding-bottom: 35px;
     width: 100%;
 }
-/* Adjusts the fork images */
+
 #left-fork, #right-fork {
     overflow: hidden;
     mix-blend-mode: multiply;
@@ -25,7 +25,7 @@ body {
     height: 200px;
     width: 200px;   
 }
-/* Styling for the title*/
+
 h1 {
     font-size: 100px;
     letter-spacing: 7px;
@@ -33,7 +33,7 @@ h1 {
     color: rgb(255, 194, 102);
     text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
 }
-/* Styles the start button on the initial page*/
+
 .sButton {
     margin: 10px;
 	background: linear-gradient(to right, rgb(255, 230, 179), rgb(255, 170, 0));
@@ -88,7 +88,6 @@ h1 {
     color: rgb(117, 207, 207);
 }
 
-/* This is to spin the forks in the jumbotron */
 @keyframes flip {
     from {
       -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
@@ -104,7 +103,8 @@ h1 {
           rotate3d(0, 1, 0, -190deg);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-    }    
+    }
+    
     50% {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
         rotate3d(0, 1, 0, -170deg);
@@ -112,7 +112,8 @@ h1 {
         rotate3d(0, 1, 0, -170deg);
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
-    }    
+    }
+    
     80% {
     -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -121,6 +122,7 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
+
     to {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -128,17 +130,20 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-}  /*end of the animation*/
+}
 
 h2, h3 {
     color: rgb(243, 193, 118);
     text-shadow: 0 0 1px rgb(41, 39, 39), -1px -1px 1px rgb(41, 39, 39), 1px 0 1px rgb(41, 39, 39), 1px 1px 1px rgb(41, 39, 39);
 }
 
+
 .container {
+    text-align: center;   /*need to add*/
+    overflow: auto;       /*need to add*/
     margin-top: 50px;
     background-color: rgba(126, 147, 153, 0.5);
-    color: rgb(243, 193, 118);
+    color: rgb(243, 193, 118);  
     text-shadow: 0 0 0.6px rgb(41, 39, 39), -1px -1px 0.6px rgb(41, 39, 39), 1px 0 0.6px rgb(41, 39, 39), 1px 1px 0.6px rgb(41, 39, 39);
 }
 
@@ -148,21 +153,23 @@ h2, h3 {
     font-size: 28px;
 }
 p {
+    text-align: left;       /*need to add*/
     color:rgb(216, 216, 189);
     font-size: 22px;
 }
 
-h4 {
+h4{
+    text-align: center;
     font-size: 48px;
 }
 
-/* this is for the loader and need to center */
+/* this is for the loader */
 .lds-hourglass {
     display: inline-block;
     position: relative;
     width: 64px;
     height: 64px;
-    margin-left: 47%;
+    /* margin-left: 47%;   need to take this out*/
 }
 
 .lds-hourglass:after {
@@ -193,16 +200,47 @@ h4 {
 }
 
 #rest-img{
-    width: 100px;
-    height: auto;
+    width: auto;  /*changed the size*/
+    height: 200px;  /*changed the size*/
 }
 
-.thumbs, .thumb-img {
-    width: 50px;
+#name-div{         /*need to add*/
+    font-weight: bold;
+    font-size: 36px;   /*need to add*/
+}
+
+#rating-div, #cuisine-div{        /*need to add*/
+    font-size: 25px;
+}
+
+#thumbs-up {
+    /* background-image: url("../images/thumbsUp.png"); */
+    float: left;   /*need to add*/
+    margin-left: 40%;   /*need to add*/
+    width: 70px;    /*need to add*/
     height: 50px;
 }
-/* styles for the ipad size*/
-@media screen and (max-width: 768px) {
+
+#thumbs-down{
+    /* background-image: url("../images/thumbsDown.png"); */
+    float: right;    /*need to add*/
+    margin-right: 40%;   /*need to add*/
+    width: 70px;     /*need to add*/
+    height: 50px;
+}
+
+#choice-div{         /*need to add*/
+    font-weight: bold;
+    font-size: 36px;   /*need to add*/
+    color: rgb(148, 247, 247);    
+}
+
+#address-div{
+    font-size: 25px;
+    color: rgb(148, 247, 247); 
+}
+
+@media screen and (max-width: 1024px) {   /*need to add*/
     #left-fork, #right-fork {
         display: flex;
     }
@@ -219,14 +257,21 @@ h4 {
         background: cover;
         background-position: center;
     }
+    #thumbs-up{
+        margin-left: 30%;
+    }
+    #thumbs-down{
+        margin-right: 30%;
+    }
 }
-/*styles for the phone size*/
-@media screen and (max-width: 414px) {
+
+@media screen and (max-width: 768px) {    /*need to add*/
+   
+    .jumbotron {        
+        padding-top: 60px;
+    }
     #left-fork, #right-fork{
         display: none;
-    }
-    .jumbotron {
-        padding-top: 60px;
     }
 
     h1 {
@@ -244,4 +289,10 @@ h4 {
         width: 95%;
         margin-top: 40px;
     }  
+    #thumbs-up{
+        margin-left: 15%;
+    }
+    #thumbs-down{
+        margin-right: 15%;
+    }
 }
