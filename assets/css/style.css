@@ -1,12 +1,13 @@
+/* style for html and body */
 html, body {
     width: 100%;
-}
-
+}  
+/* style for background image */
 body {
     background-image: url("../images/kenny-luo-649778-unsplash.jpg");
     background-size: 100%;
 }
-
+/* jumbotron style */
 .jumbotron {
     background-color: rgba(173, 235, 235, 0.5);
     text-align: center;
@@ -14,7 +15,7 @@ body {
     padding-bottom: 35px;
     width: 100%;
 }
-
+/* style for fork images and animation call "flip" */
 #left-fork, #right-fork {
     overflow: hidden;
     mix-blend-mode: multiply;
@@ -25,7 +26,7 @@ body {
     height: 200px;
     width: 200px;   
 }
-
+/* style for h1 */
 h1 {
     font-size: 100px;
     letter-spacing: 7px;
@@ -33,7 +34,7 @@ h1 {
     color: rgb(255, 194, 102);
     text-shadow: 0 0 3px black, -1px -1px 3px black, 1px 0 3px black, 1px 1px 3px black;
 }
-
+/* style for submit button and animation */
 .sButton {
     margin: 10px;
 	background: linear-gradient(to right, rgb(255, 230, 179), rgb(255, 170, 0));
@@ -56,13 +57,13 @@ h1 {
 	position: relative;
 	overflow: hidden;
 }
-
+/* style for hover on submit button */
 .sButton:hover {
 	transform: perspective(500px) rotateY(15deg);
 	text-shadow: -6px 3px 2px rgb(107, 129, 129);
 	box-shadow: -2px 0 0 5px rgb(214, 241, 241);
 }
-
+/* styles for animation on submit button */
 .sButton::before {
 	content: '';
 	position: absolute;
@@ -72,22 +73,22 @@ h1 {
 	left: -100%;
 	transition: 0.5s;
 }
-
+/* style submit button hover */
 .sButton:hover::before {
 	left: 100%;
 }
-
+/* style text for room key */
 #roomKey{
     background-color: rgba(241, 214, 156, 0.705);
     color: rgb(61, 57, 53);
     border-style: outset;
     border-color: rgb(117, 207, 207);
 }
-
+/* style for room key text field */
 #label-key{
     color: rgb(117, 207, 207);
 }
-
+/* animation for fork images */
 @keyframes flip {
     from {
       -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
@@ -103,8 +104,7 @@ h1 {
           rotate3d(0, 1, 0, -190deg);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-    }
-    
+    }    
     50% {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 130px)
         rotate3d(0, 1, 0, -170deg);
@@ -112,8 +112,7 @@ h1 {
         rotate3d(0, 1, 0, -170deg);
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
-    }
-    
+    }    
     80% {
     -webkit-transform: perspective(400px) scale3d(0.95, 0.95, 0.95) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -122,7 +121,6 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-
     to {
     -webkit-transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
         rotate3d(0, 1, 0, 0deg);
@@ -130,48 +128,45 @@ h1 {
     -webkit-animation-timing-function: ease-in;
     animation-timing-function: ease-in;
     }
-}
-
+} 
+/* style for h2 and h3 */
 h2, h3 {
     color: rgb(243, 193, 118);
     text-shadow: 0 0 1px rgb(41, 39, 39), -1px -1px 1px rgb(41, 39, 39), 1px 0 1px rgb(41, 39, 39), 1px 1px 1px rgb(41, 39, 39);
 }
-
-
+/* style for container */
 .container {
-    text-align: center;   /*need to add*/
-    /* overflow: auto;       need to add */
+    text-align: center;       
     margin-top: 50px;
     background-color: rgba(126, 147, 153, 0.5);
     color: rgb(243, 193, 118);  
     text-shadow: 0 0 0.6px rgb(41, 39, 39), -1px -1px 0.6px rgb(41, 39, 39), 1px 0 0.6px rgb(41, 39, 39), 1px 1px 0.6px rgb(41, 39, 39);
 }
-
+/* style for form group */
 .form-group {
     text-align: center;
     font-weight: bolder;
     font-size: 28px;
 }
+/* style for p tags */
 p {
     text-align: left;       /*need to add*/
     color:rgb(216, 216, 189);
     font-size: 22px;
 }
-
+/* style for h4 */
 h4{
     text-align: center;
     font-size: 48px;
 }
-
-/* this is for the loader */
+/* style for loader image */
 .lds-hourglass {
     display: inline-block;
     position: relative;
     width: 64px;
-    height: 64px;
-    /* margin-left: 47%;   need to take this out*/
+    height: 64px;    
 }
-
+/* style for loader image */
 .lds-hourglass:after {
     content: " ";
     display: block;
@@ -184,7 +179,7 @@ h4{
     border-color: #fff transparent #fff transparent;
     animation: lds-hourglass 1.2s infinite;
 }
-
+/* animation for loader image */
 @keyframes lds-hourglass {
     0% {
       transform: rotate(0);
@@ -198,49 +193,47 @@ h4{
       transform: rotate(1800deg);
     }
 }
-
+/* style for restaurant image */
 #rest-img{
-    width: auto;  /*changed the size*/
-    height: 200px;  /*changed the size*/
+    width: auto;  
+    height: 200px;  
 }
-
-#name-div{         /*need to add*/
+/* style for choices restaurant name */
+#name-div{         
     font-weight: bold;
-    font-size: 36px;   /*need to add*/
+    font-size: 36px;   
 }
-
-#rating-div, #cuisine-div{        /*need to add*/
+/* style for choices restaurant rating and cuisine type */
+#rating-div, #cuisine-div{ 
     font-size: 25px;
 }
-
-#thumbs-up {
-    /* background-image: url("../images/thumbsUp.png"); */
-    float: left;   /*need to add*/
-    margin-left: 40%;   /*need to add*/
-    width: 70px;    /*need to add*/
+/* style for thumbs up image */
+#thumbs-up {    
+    float: left;   
+    margin-left: 40%;  
+    width: 70px;    
     height: 50px;
 }
-
-#thumbs-down{
-    /* background-image: url("../images/thumbsDown.png"); */
-    float: right;    /*need to add*/
-    margin-right: 40%;   /*need to add*/
-    width: 70px;     /*need to add*/
+/* style for thumbs down image */
+#thumbs-down{    
+    float: right;    
+    margin-right: 40%; 
+    width: 70px; 
     height: 50px;
 }
-
-#choice-div{         /*need to add*/
+/* style for results restaurant name */
+#choice-div{         
     font-weight: bold;
-    font-size: 36px;   /*need to add*/
+    font-size: 36px; 
     color: rgb(148, 247, 247);    
 }
-
+/* style for results address */
 #address-div{
     font-size: 25px;
     color: rgb(148, 247, 247); 
 }
-
-@media screen and (max-width: 1024px) {   /*need to add*/
+/* style for responsive website ipad size */
+@media screen and (max-width: 1024px) { 
     #left-fork, #right-fork {
         display: flex;
     }
@@ -248,11 +241,9 @@ h4{
         padding-top: 60px; 
         text-align: center;
     }
-
     h1 {
         font-size: 60px;
     }
-
     body {
         background: cover;
         background-position: center;
@@ -264,16 +255,14 @@ h4{
         margin-right: 15%;
     }
 }
-
-@media screen and (max-width: 768px) {    /*need to add*/
-   
+/* style for responsive website iphone size */
+@media screen and (max-width: 768px) {     
     .jumbotron {        
         padding-top: 60px;
     }
     #left-fork, #right-fork{
         display: none;
     }
-
     h1 {
         font-size: 50px;
         padding-left: 18px;
