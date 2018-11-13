@@ -15,7 +15,7 @@
 var LocalState = "waiting";
 var LocalID = "";
 var RoomID = "";
-var RestaurantArray = [];
+var RestaurantArray = [{}, {restaurant: {featured_image: "https://b.zmtcdn.com/data/res_imagery/16917945_RESTAURANT_3432af73a7e14385a567973ebc51be1f_c.jpg?fit=around%7C1200%3A464&crop=1200%3A464%3B0%2C0", name: "Snarfs", cuisines: "Sandwiches, Other Stuff", user_rating: {aggregate_rating: "3 stars"}}}];
 var ChoiceCounter = 0;
 
 
@@ -31,19 +31,18 @@ var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9
 // url: 'https://api.ipapi.com/' + ip + '?access_key=' + access_key,   
 //     dataType: 'jsonp',
 //     success: function(json) {
-function ipLookUpZomatoReturn (NewAPIURL) {
+function ipLookUpZomatoReturn () {
   $.ajax({"url": NewAPIURL,
-          dataType : "jsonp", 
-          success: function(response){
-          console.log(response);
-          console.log('User\'s lat is: ', response.latitude);
-          console.log('User\'s long is: ', response.longitude);
-          var userLat = response.latitude;
-          var userLon = response.longitude;
-          // Run zomato function with lat and long. 
-          zomatoLookup(userLat,userLon);
-          }
-        });
+          "dataType": "jsonp"})
+          .then(function(response){
+            console.log(response);
+            console.log('User\'s lat is: ', response.latitude);
+            console.log('User\'s long is: ', response.longitude);
+            var userLat = response.latitude;
+            var userLon = response.longitude;
+            // Run zomato function with lat and long. 
+            zomatoLookup(userLat,userLon);
+            });
   // .then(
   //     function success(response) {
   //         console.log(response);
@@ -200,7 +199,7 @@ function waitingScreen() {
   //Display waitingscreen
   $(".container").append("<div class=\"lds-hourglass\"></div>");
   var WaitMessage = $("<h4>");
-  WaitMessage.text("Waiting for others. Please give them your Room Key: " + RoomID);
+  WaitMessage.append("Waiting for others.<br>Your Room Key: " + RoomID);
   $(".container").append(WaitMessage);
 
   
@@ -468,8 +467,6 @@ connectedRef.on("value", function(snap) {
 
     // If they are connected..
     if (snap.val()) {
-      console.log("TEST");
-      console.log("TEST");
 
         // Add user to the connections list.
         PersonalIDObj = connectionsRef.push(true);
