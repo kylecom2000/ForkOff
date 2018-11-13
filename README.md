@@ -9,15 +9,13 @@
 * Barbara Wright
 
 ### Fork Off (possible name)
-## People everywhere, since the beginning of time have come home from work and their significant other has no idea what to answer for the following question: What do you want to eat for dinner?  Our app helps our undeciders to make a decision via a "Tinder"-like decision making process. When both people agree on a resturant, the decision has been made.
+* People everywhere, since the beginning of time have come home from work and their significant other has no idea what to answer for the following question: What do you want to eat for dinner?  Our app helps our undeciders to make a decision via a "Tinder"-like decision making process. When both people agree on a resturant, the decision has been made.
 
-### Possible API's to be used
+### API used
 * Google Maps
-* Yelp
 * Zomato
-* Google Place
 
-## Tasks
+### Tasks
 * API Documentation Research
 * HTML 
 * CSS
@@ -26,4 +24,4 @@
 * Comparing results
 * Displaying table at end of session.
 
-## Rough Sketch of project [HERE](assets/images/RoughDraft.JPG)
+### Rough Sketch of project [HERE](assets/images/RoughDraft.JPG)
