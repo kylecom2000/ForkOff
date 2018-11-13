@@ -22,7 +22,7 @@ var ChoiceCounter = 0;
 // ======================================================================================
 // HTTPS or HTTP?
 function ipLookUpZomatoReturn () {
-  $.ajax('https://ip-api.com/json')
+  $.ajax('https://cors-ut-bootcamp.herokuapp.com/http://ip-api.com/json')
   .then(
       function success(response) {
           console.log('User\'s lat is: ', response.lat);
