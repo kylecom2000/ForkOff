@@ -266,7 +266,8 @@ function waitingScreen() {
   //Display waitingscreen
   $(".container").append("<div class=\"lds-hourglass\"></div>");
   var WaitMessage = $("<h4>");
-  WaitMessage.append("Waiting for others.<br>Your Room Key: " + RoomID);
+  WaitMessage.append("Waiting for others.<br>Your Room Key:<br>");
+  WaitMessage.append("<div id='room-display'>" + RoomID + "</div>");
   $(".container").append(WaitMessage);
 
   
