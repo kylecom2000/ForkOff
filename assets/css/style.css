@@ -130,8 +130,13 @@ h1 {
     }
 } 
 /* style for h2 and h3 */
-h2, h3 {
+h2 {
     color: rgb(243, 193, 118);
+    text-shadow: 0 0 1px rgb(41, 39, 39), -1px -1px 1px rgb(41, 39, 39), 1px 0 1px rgb(41, 39, 39), 1px 1px 1px rgb(41, 39, 39);
+}
+/* style for h3 */
+h3{
+    color: rgb(117, 207, 207);
     text-shadow: 0 0 1px rgb(41, 39, 39), -1px -1px 1px rgb(41, 39, 39), 1px 0 1px rgb(41, 39, 39), 1px 1px 1px rgb(41, 39, 39);
 }
 /* style for container */
@@ -241,12 +246,12 @@ h4{
 #choice-div{         
     font-weight: bold;
     font-size: 36px; 
-    color: rgb(148, 247, 247);    
+    color: rgb(243, 193, 118);   
 }
 /* style for results address */
 #address-div{
     font-size: 25px;
-    color: rgb(148, 247, 247); 
+    color: rgb(243, 193, 118); 
 }
 /* style for map image */
 #map-div {
