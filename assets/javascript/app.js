@@ -459,11 +459,15 @@ function DisplayResult () {
   
   $(".container").append("<div id=\"image-div\"><img id=\"result-img\" src=\"https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif\"></div>");
   
-  var MapDiv = $("<div>");
-  MapDiv.attr("id", "map-div");
-  $(".container").append(MapDiv);
-  
   $(".container").append("<h3>YOU FORKED OFF!</h3>");
+
+  if (userLat !== "") {
+
+    var MapDiv = $("<div>");
+    MapDiv.attr("id", "map-div");
+    $(".container").append(MapDiv);
+
+  }
 
   var NameDiv = $("<div>")
   NameDiv.text(RestaurantArray[ChoiceCounter-1].restaurant.name) 
