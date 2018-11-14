@@ -153,9 +153,14 @@ h3{
     font-weight: bolder;
     font-size: 28px;
 }
+/*Styling room-display on the loading page*/
+#room-display {
+    color: rgb(117, 207, 207);
+    font-size: 30px;
+}
 /* style for p tags */
 p {
-    text-align: left;       /*need to add*/
+    text-align: center;       /*need to add*/
     color:rgb(216, 216, 189);
     font-size: 22px;
 }
