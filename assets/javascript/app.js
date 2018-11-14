@@ -110,7 +110,7 @@ function fireBaseTheseResturants(payload) {
   
   console.log("fireBaseTheseResturants has been run");
   
-  database.ref(RoomID + "/Restaurants").set(payload);
+  database.ref("Rooms/" + RoomID + "/Restaurants").set(payload);
   // RestaurantArray = payload;
 };
 
@@ -124,25 +124,25 @@ function StartButton () {
 	if (RoomID !== "") {
   
   	// Add the current user to the list of attendees is the local room, and remove them if they disconnect.
-  	var Attend = database.ref(RoomID+"/Attendees").push(true);
+  	var Attend = database.ref("Rooms/" + RoomID + "/Attendees").push(true);
   	Attend.onDisconnect().remove();
 
   	// Look at the number of people in the room and decide what to do. Might be able to just put in ChooseState(snap), but not certain.
-  	database.ref(RoomID+"/Attendees").once("value").then(function(snap) {
+  	database.ref("Rooms/" + RoomID + "/Attendees").once("value").then(function(snap) {
     
     	ChooseState(snap) 
   
   	});
 
   	// Add a listener for the state of the interaction.
-  	database.ref(RoomID+"/RunState").on("value", function(snap) {DecideCourse(snap)}, function(){
+  	database.ref("Rooms/" + RoomID + "/RunState").on("value", function(snap) {DecideCourse(snap)}, function(){
 
-    	database.ref(RoomID+"/RunState").set ({"state" : LocalState});
+    	database.ref("Rooms/" + RoomID + "/RunState").set ({"state" : LocalState});
 
     });
     
     // Check for the restaurants
-    database.ref(RoomID).on("value", function (snap) {
+    database.ref("Rooms/" + RoomID).on("value", function (snap) {
 
       if (snap.child("Restaurants").exists()) {
 
@@ -154,15 +154,15 @@ function StartButton () {
 
         }
   
-        database.ref(RoomID).off();
+        database.ref("Rooms/" + RoomID).off();
 
         if (snap.child("Attendees").numChildren() >= 2) {
 
-          database.ref(RoomID + "/RunState").set({ "state": "choosing" });
+          database.ref("Rooms/" + RoomID + "/RunState").set({ "state": "choosing" });
         
         } else {
 
-          database.ref(RoomID + "/RunState").set({ "state": "waiting" });
+          database.ref("Rooms/" + RoomID + "/RunState").set({ "state": "waiting" });
 
         }
 
@@ -199,7 +199,7 @@ function ChooseState (UserSnap) {
     // locationFeedToZomato ();
 
     // and the state on FireBase is set to "waiting" (for the second person)
-    database.ref(RoomID+"/RunState").set({"state" : "waiting"});
+    database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "waiting"});
 
   // If the user entering is the second user, 
   } else if (CurrentUsers >= 2 && LocalState === "waiting") {
@@ -214,13 +214,13 @@ function ChooseState (UserSnap) {
     }
 
     // The second person should retrieve the list of restaurants from FireBase and save it locally
-    // database.ref(RoomID + "/Restaurants").once("value", function(snap){
+    // database.ref("Rooms/" + RoomID + "/Restaurants").once("value", function(snap){
     
    	// Take the snapshot of the value of that location, and save it as the local variable RestaurantArray
     // RestaurantArray = snap.val();
 
     // and the state on FireBase is set to "choosing."
-    // database.ref(RoomID+"/RunState").set({"state" : "choosing"});
+    // database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "choosing"});
     
     // });
 
@@ -329,7 +329,7 @@ function NewOption () {
   LocalChoice = true;
 
   // Clear out the choices from the last restaurant.
-  database.ref(RoomID+"/UserChoices/").set(null);
+  database.ref("Rooms/" + RoomID + "/UserChoices/").set(null);
 
   // Extract the current values and save them as a local variable
   var CurrentImg = RestaurantArray[ChoiceCounter].restaurant.featured_image;
@@ -400,28 +400,28 @@ function TransmitChoice (Choice) {
   // Need a conditional because apparently the first part of a set statement can't be a variable.
   if(LocalID === "PlayerOne") {
 
-      database.ref(RoomID + "/UserChoices").update({PlayerOne : Choice});
+      database.ref("Rooms/" + RoomID + "/UserChoices").update({PlayerOne : Choice});
   
   } else if (LocalID === "PlayerTwo") {
 
-      database.ref(RoomID + "/UserChoices").update({PlayerTwo : Choice});
+      database.ref("Rooms/" + RoomID + "/UserChoices").update({PlayerTwo : Choice});
 
   }
 
   // Check to see if it's the first or second decision and set the state accordingly
 
-  database.ref(RoomID + "/UserChoices").once("value").then(function (snap){
+  database.ref("Rooms/" + RoomID + "/UserChoices").once("value").then(function (snap){
 
     // if it's the first decision    
     if (snap.numChildren() === 1) {
 
       // change the state to "choosewait"
-      database.ref(RoomID+"/RunState").set({"state" : "choosewait"});
+      database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "choosewait"});
 
     // if it's the second decision, set state to "chosen"
     } else if (snap.numChildren() === 2) {
 
-      database.ref(RoomID+"/RunState").set({"state" : "chosen"});
+      database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "chosen"});
 
     }
 
@@ -436,19 +436,19 @@ function Evaluate () {
   if (LocalID === "PlayerOne") {
 
     // Get the decisions from FireBase
-    database.ref(RoomID + "/UserChoices").once("value").then(function (snap) {
+    database.ref("Rooms/" + RoomID + "/UserChoices").once("value").then(function (snap) {
 
       // If both choices were true (thumbs up - TODO this may change depending on how the data ends up being stored on FireBase)
       if (snap.val().PlayerOne && snap.val().PlayerTwo) {
 
         // Set the state on FireBase to decided - ending the loop
-        database.ref(RoomID+"/RunState").set({"state" : "decided"});
+        database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "decided"});
 
       // otherwise...
       } else {
 
         // Set the state on FireBase to rechoosing, which brings up a new option.
-        database.ref(RoomID+"/RunState").set({"state" : "rechoosing"});
+        database.ref("Rooms/" + RoomID + "/RunState").set({"state" : "rechoosing"});
 
       }
     
@@ -462,7 +462,7 @@ function Evaluate () {
 function DisplayResult () {
 
   // Remove the listener to the state before state gets deleted.
-  database.ref(RoomID+"/RunState").off();
+  database.ref("Rooms/" + RoomID + "/RunState").off();
 
   // Clear the content and add celebration and information.
   $(".container").empty();
@@ -496,7 +496,7 @@ function DisplayResult () {
   // Clean the room from the FireBase (using PlayerTwo as the 'server')
   if (LocalID === "PlayerTwo") {
 
-      setTimeout ( function () {database.ref(RoomID).remove()}, 1000);
+      setTimeout ( function () {database.ref("Rooms/" + RoomID).remove()}, 1000);
 
   }
 
