@@ -88,7 +88,7 @@ function zomatoLookup(lat,lon) {
   var rapid = new RapidAPI("default-application_5bd9ddc8e4b0d1763ed6b07c", "0b60f110-a5a7-4fe2-93af-42199127603c");
   rapid.call('Zomato', 'getLocationDetailsByCoordinates', { 
     'coordinates': `${lat}, ${lon}`,
-    'apiKey': 'c30eca16c0c03ef51799b26e942490e3'
+    'apiKey': '3ae327ee165849e7a3f3caa11cfe6604'
   
   }).on('success', function (payload) {
      
@@ -135,7 +135,34 @@ function StartButton () {
 
     	database.ref(RoomID+"/RunState").set ({"state" : LocalState});
 
-  	});
+    });
+    
+    // Check for the restaurants
+    database.ref(RoomID).on("value", function (snap) {
+
+      if (snap.child("Restaurants").exists()) {
+
+        RestaurantArray = snap.val().Restaurants;
+
+        database.ref(RoomID).off();
+
+        if (snap.child("Attendees").numChildren() >= 2) {
+
+          database.ref(RoomID + "/RunState").set({ "state": "choosing" });
+        
+        } else {
+
+          database.ref(RoomID + "/RunState").set({ "state": "waiting" });
+
+        }
+
+      } else {
+
+        locationFeedToZomato();
+
+      }
+
+    });
   
   // If they haven't entered a roomkey, tell them they need to.
   } else {
@@ -159,7 +186,7 @@ function ChooseState (UserSnap) {
     if (LocalID === "") {LocalID = "PlayerOne";}
 
     // The first person should get the list of restaurants and push it to the appropriate place on FireBase
-    locationFeedToZomato ();
+    // locationFeedToZomato ();
 
     // and the state on FireBase is set to "waiting" (for the second person)
     database.ref(RoomID+"/RunState").set({"state" : "waiting"});
@@ -172,20 +199,20 @@ function ChooseState (UserSnap) {
       
       LocalID = "PlayerTwo";
     
-      locationFeedToZomato();
+      // locationFeedToZomato();
       
     }
 
     // The second person should retrieve the list of restaurants from FireBase and save it locally
-    database.ref(RoomID + "/Restaurants").once("value", function(snap){
+    // database.ref(RoomID + "/Restaurants").once("value", function(snap){
     
    	// Take the snapshot of the value of that location, and save it as the local variable RestaurantArray
-    RestaurantArray = snap.val();
+    // RestaurantArray = snap.val();
 
     // and the state on FireBase is set to "choosing."
-    database.ref(RoomID+"/RunState").set({"state" : "choosing"});
+    // database.ref(RoomID+"/RunState").set({"state" : "choosing"});
     
-    });
+    // });
 
     
   }
@@ -246,10 +273,11 @@ function DecideCourse (StateSnap) {
   
   	waitingScreen();
   
-  }
+  // If The restaurants are there...
+  } else if (LocalState === "ready") {
 
   // If you're choosing for the first time, prepare the screen and present a new option
-  else if (LocalState === "choosing") {
+  }  else if (LocalState === "choosing") {
 
     PrepareDecisions();
     NewOption();
