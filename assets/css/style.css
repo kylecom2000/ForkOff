@@ -253,7 +253,9 @@ h4{
 #map-div {
     width: 300px;
     height: 150px;
+    margin: inherit;
 }
+
 
 /* style for responsive website ipad size */
 @media screen and (max-width: 1024px) { 
