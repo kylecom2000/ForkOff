@@ -232,8 +232,16 @@ h4{
     font-size: 25px;
     color: rgb(148, 247, 247); 
 }
+
+
+#map-div {
+    width: 300px;
+    height: 150px;
+}
+
 /* style for responsive website ipad size */
 @media screen and (max-width: 1024px) { 
+
     #left-fork, #right-fork {
         display: flex;
     }
@@ -285,3 +293,4 @@ h4{
         margin-right: 15%;
     }
 }
+

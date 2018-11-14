@@ -19,6 +19,8 @@ var RestaurantArray = [];
 var ChoiceCounter = 0;
 var userLat = "";
 var userLon = "";
+var GoogleDirections = {};
+var GoogleDisplay = {};
 
 var ipapikey = "3d8cbd8859f45c2a81b9aea05d1897dd";
 
@@ -26,7 +28,7 @@ var NewAPIURL = "https://api.ipapi.com/api/check?access_key=3d8cbd8859f45c2a81b9
 // Local functions go below this line.
 // ======================================================================================
 
-function InitGeo () {
+function initMap () {
 
   GoogleDirections = new google.maps.DirectionsService();
   GoogleDisplay = new google.maps.DirectionsRenderer();
@@ -34,16 +36,19 @@ function InitGeo () {
 }
 
 function GetDirections() {
+
+  GoogleDirections = new google.maps.DirectionsService();
+  GoogleDisplay = new google.maps.DirectionsRenderer();
   
-  var UserLoc = new google.maps.LatLng(userLat, userLng);
+  var UserLoc = new google.maps.LatLng(userLat, userLon);
   var mapOptions = {
-    zoom: 8,
+    zoom: 15,
     center: UserLoc
   };
   var RestMap = new google.maps.Map(document.getElementById("map-div"), mapOptions);
   GoogleDisplay.setMap(RestMap);
 
-  var start = new google.maps.LatLong(userLat,userLng);
+  var start = new google.maps.LatLng(userLat,userLon);
   var end = new google.maps.LatLng(RestaurantArray[ChoiceCounter-1].restaurant.location.latitude, RestaurantArray[ChoiceCounter-1].restaurant.location.longitude);
   var request = {
     origin: start,
@@ -190,7 +195,7 @@ function PrepareDecisions () {
   // Add different divs for each item
   // #image-div
   $(".container").append("<div id=\"image-div\"><img id=\"rest-img\"></div>");
-  $("#rest-img").attr("onerror", "assets/images/favicon.gif");
+  $("#rest-img").attr("onerror", "this.src = \"assets/images/favicon.gif\";");
   // #name-div
   $(".container").append("<div id=\"name-div\"></div>");
   // #rating-div
@@ -417,7 +422,13 @@ function DisplayResult () {
 
   // Clear the content and add celebration and information.
   $(".container").empty();
+  
   $(".container").append("<div id=\"image-div\"><img id=\"result-img\" src=\"https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif\"></div>");
+  
+  var MapDiv = $("<div>");
+  MapDiv.attr("id", "map-div");
+  $(".container").append(MapDiv);
+  
   $(".container").append("<h3>YOU FORKED OFF!</h3>");
 
   var NameDiv = $("<div>")
@@ -430,9 +441,7 @@ function DisplayResult () {
   AddressDiv.attr("id", "address-div");
   $(".container").append(AddressDiv);
 
-  var MapDiv = $("<div>");
-  MapDiv.attr("id", "map-div");
-  $(".container").append(AddressDiv);
+
   
   GetDirections();
   
