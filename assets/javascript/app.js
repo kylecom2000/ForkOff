@@ -77,11 +77,15 @@ function locationFeedToZomato () {
 }
 
 function MyPosition(position) {
-    console.log(position.coords.latitude +"and"+ position.coords.longitude);
-    userLat = position.coords.latitude; // lat from navigator
-    userLon = position.coords.longitude; // long from naigator
-    console.log(userLat + "and" + userLon);
+  
+  console.log(position.coords.latitude + "and" + position.coords.longitude);
+  userLat = position.coords.latitude; // lat from navigator
+  userLon = position.coords.longitude; // long from naigator
+  console.log(userLat + "and" + userLon);
+  if (RestaurantArray == "") {
     zomatoLookup(userLat, userLon);
+  }
+
 }
 
 function zomatoLookup(lat,lon) {
@@ -107,7 +111,7 @@ function fireBaseTheseResturants(payload) {
   console.log("fireBaseTheseResturants has been run");
   
   database.ref(RoomID + "/Restaurants").set(payload);
-  RestaurantArray = payload;
+  // RestaurantArray = payload;
 };
 
 // When the user hits the start button
@@ -144,6 +148,12 @@ function StartButton () {
 
         RestaurantArray = snap.val().Restaurants;
 
+        if(userLat === ""){
+
+        locationFeedToZomato();
+
+        }
+  
         database.ref(RoomID).off();
 
         if (snap.child("Attendees").numChildren() >= 2) {
@@ -323,7 +333,7 @@ function NewOption () {
 
   // Extract the current values and save them as a local variable
   var CurrentImg = RestaurantArray[ChoiceCounter].restaurant.featured_image;
-  if (CurrentImg = "") {CurrentImg = "assets/images/favicon.gif";}
+  if (CurrentImg === "") {CurrentImg = "assets/images/favicon.gif";}
   var CurrentName = RestaurantArray[ChoiceCounter].restaurant.name;
   var CurrentCuisine = RestaurantArray[ChoiceCounter].restaurant.cuisines;
   var CurrentRating = RestaurantArray[ChoiceCounter].restaurant.user_rating.aggregate_rating;
