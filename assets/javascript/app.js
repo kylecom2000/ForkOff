@@ -168,7 +168,13 @@ function ChooseState (UserSnap) {
   } else if (CurrentUsers >= 2 && LocalState === "waiting") {
 
     // the user entering is set to "PlayerTwo"
-    if (LocalID === "") {LocalID = "PlayerTwo";}
+    if (LocalID === "") {
+      
+      LocalID = "PlayerTwo";
+    
+      locationFeedToZomato();
+      
+    }
 
     // The second person should retrieve the list of restaurants from FireBase and save it locally
     database.ref(RoomID + "/Restaurants").once("value", function(snap){
