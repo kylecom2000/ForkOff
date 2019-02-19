@@ -1,5 +1,5 @@
 # Fork Off!
-#### Access page [HERE](https://kylecom2000.github.io/TeamOne-ProjectOne/).
+#### Access page [HERE](https://kylecom2000.github.io/ForkOff/).
 
 ### Description
 * People everywhere, since the beginning of time have come home from work and their significant other has no idea what to answer for the following question: What do you want to eat for dinner?  Our app helps our undeciders to make a decision via a "Tinder"-like decision making process. When both people agree on a resturant, the decision has been made.
